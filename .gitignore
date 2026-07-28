@@ -1,0 +1,30 @@
+# Secrets and environment - never commit these
+.env
+.env.*
+*.pem
+*.key
+secrets/
+credentials*.json
+
+# Dependencies / build
+node_modules/
+dist/
+build/
+target/
+.venv/
+__pycache__/
+*.pyc
+
+# Logs and local state
+*.log
+.cache/
+tmp/
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/
+
+# Claude Code: version the agent definitions only, not local session/settings
+.claude/*
+!.claude/agents/
