@@ -18,7 +18,7 @@ Last full update: **2026-07-28**.
 | Voice cloning service (Chatterbox, containerized) | high | build | 🟢 proven | box currently loaned out |
 | Talking portrait (EchoMimicV3 + persistent-model server) | high | build | 🟢 proven (WSL warm render 264s/125f) | box currently loaned out |
 | Per-twin usage quotas (video allowance, message fair-use) | high | build | 🟢 62 tests green | - |
-| Guide avatar clips (pre-rendered interviewer) + hands-free sitting screen | high | build | 🔵 code done, device-untested | GPU box loan; quality/voice verdicts |
+| Guide avatar clips (pre-rendered interviewer) + hands-free sitting screen | high | build | 🔵 committed (3913a82), device-untested | GPU box loan; quality/voice verdicts |
 | Sitting refinement with Sean as test subject | high | validate | ⚪ next up | device retest first |
 | Nan's sitting | high | validate | ⚪ deliberately postponed (2026-07-28) | refinement above |
 | Apple Developer enrollment (DUNS 234989532 ready) | high | ship | 🔴 user action | Apple verification days |
