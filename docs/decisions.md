@@ -5,6 +5,36 @@ Newest first. One entry per decision; keep it short.
 
 ---
 
+## 2026-07-31 - Phase-A GPU architecture: no cloud GPUs; the home box pulls render jobs
+
+**Status:** accepted (built same day, monorepo 13c34a2)
+
+**Context:** $1,000 Activate credits ~ 3-6 months of core stack but only ~6
+weeks with a dedicated L4. The Weave needs no self-hosted GPU (HF APIs + CPU);
+the GPU load is really voice replies (latency-sensitive, small) and portrait
+renders (heavy, async-tolerant by product design - metered allowance,
+voice-first UX).
+
+**Decision:** production runs no GPUs. Chat/ASR/embeddings/fallback-TTS stay on
+HF Inference Providers; voice replies use the Kokoro fallback in cloud for now;
+portrait renders travel by SQS to a pull-worker on the founder's GPU box
+(fully-resolved job messages, S3 result-object as the completion signal, no
+inbound connectivity to the house). Scaling ladder when reliability or volume
+demands it: serverless per-second GPU (Modal/RunPod/HF Endpoints, ~$50-75/mo at
+pilot volume) -> dedicated L4 (~$450-650/mo) only when utilisation fills it.
+
+**Alternatives considered:** dedicated L4 from day one (burns the credits in
+weeks at ~zero utilisation); Tailscale-connecting cloud inference to the box
+for synchronous renders (couples request latency to home availability);
+on-device inference (models need 16GB-class VRAM - not real).
+
+**Consequences:** cloned-voice replies are NOT in cloud phase A (graceful
+fallback voice; the clone still shines in local demos and sittings). The box
+becomes light production infrastructure: worker uptime matters, renders queue
+while it's dark (45-min TTL then refund). COGS at pilot ~ electricity.
+
+---
+
 ## 2026-07-28 - Nan's sitting postponed; founder is the test subject first
 
 **Status:** accepted

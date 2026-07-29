@@ -26,7 +26,8 @@ Last full update: **2026-07-31**.
 | TestFlight build + both phones as internal testers | high | ship | ⚪ ready to fire | Apple enrollment + HTTPS backend |
 | AWS Activate credits | high | fund | 🟢 GRANTED $1,000 (2026-07-31) | - |
 | NVIDIA Inception | med | fund | 🔴 rejected (automatic, no reason) | do not re-apply blind |
-| AWS deploy (Terraform + deploy script, ECS/RDS/S3/SQS) | high | ship | 🔵 UNBLOCKED — awaiting AWS account credentials on the Mac | user: aws configure |
+| AWS deploy (Terraform + deploy script, ECS/RDS/S3/SQS + render queue) | high | ship | 🔵 UNBLOCKED — awaiting AWS account credentials on the Mac | user: aws configure |
+| Async render pull-worker (phase-A GPU: box renders cloud jobs) | high | build | 🟢 built + 68 tests (13c34a2); live test at AWS deploy | - |
 | Marketing site vener.ai (product/founder/terms + sealed interest form) | med | live | 🟢 live; priority-access framing 2026-07-30 | - |
 | **Website visual upgrade + real product demos** | **high (URGENT)** | build | ⚪ todo | rights-clean demo faces (guide face decision) |
 | Pitch deck (Activate, measured economics) | med | fund | 🟢 final PDF | - |
