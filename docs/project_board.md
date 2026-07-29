@@ -8,7 +8,7 @@ Product code and technical docs live in the monorepo one level up
 detailed per-service evidence. **This board is the current-status source of
 truth**; update it as work moves.
 
-Last full update: **2026-07-28**.
+Last full update: **2026-07-30**.
 
 ## At a glance
 
@@ -24,9 +24,10 @@ Last full update: **2026-07-28**.
 | Apple Developer enrollment (DUNS 234989532 ready) | high | ship | 🔴 user action | Apple verification days |
 | EAS account + project link (slug `venerai`) | high | ship | 🟢 done 2026-07-25 | - |
 | TestFlight build + both phones as internal testers | high | ship | ⚪ ready to fire | Apple enrollment + HTTPS backend |
-| AWS Activate credits (via Spendbase) | high | fund | 🔵 re-apply | site eligibility FIXED 2026-07-28 |
+| AWS Activate credits | high | fund | 🟡 re-application SUBMITTED 2026-07-29 | awaiting review |
 | AWS deploy (Terraform + deploy script, ECS/RDS/S3/SQS) | high | ship | 🔴 written+validated, awaiting credentials | Activate credits |
-| Marketing site vener.ai (product/founder/terms + sealed waitlist) | med | live | 🟢 live, Activate-eligible | - |
+| Marketing site vener.ai (product/founder/terms + sealed interest form) | med | live | 🟢 live; priority-access framing 2026-07-30 | - |
+| **Website visual upgrade + real product demos** | **high (URGENT)** | build | ⚪ todo | rights-clean demo faces (guide face decision) |
 | Pitch deck (Activate, measured economics) | med | fund | 🟢 final PDF | - |
 | GPU box hardware (bad RAM stick B) | med | ops | 🔴 Corsair RMA (full kit must ship) | user RMA + box downtime |
 | Full-twin training (voice pack live; persona/face LoRA trainers) | med | build | 🔵 voice pack live; LoRA runs need CUDA time | GPU box availability |
@@ -41,12 +42,17 @@ Last full update: **2026-07-28**.
   face choice — current portrait is a placeholder stock photo, shipped guide needs a
   generated/licensed face). Batch = resumable; ~5h at interactive settings, ~2 days
   at premium on WSL. Paused while the GPU box is loaned out.
-- 🔵 **AWS Activate re-application**: Spendbase rejected 2026-07-28 (site was
-  waitlist-only). Site fixed and live the same day (product/founder/company/terms +
-  company no. 17335051). Re-apply via Spendbase or direct aws.amazon.com/activate.
+- 🟡 **AWS Activate re-application submitted 2026-07-29** (site made eligible first:
+  product/founder/company/terms + company no. 17335051; launch date given: Oct 2026;
+  products: ECS/ALB/RDS/ElastiCache/S3/SQS/ECR/KMS/ACM/CloudWatch + EC2 G6 L4 GPU).
+  Site reframed 2026-07-30: waitlist → "register your interest / priority access".
 
 ## Up next
 
+- ⚪ **URGENT: website visual upgrade + demos** — screen recordings of the app,
+  a guide-avatar clip, a living-portrait reply. Constraint: rights-clean faces
+  only (generated guide face / Sean's own footage — never Unsplash-derived
+  talking renders). Reuses the guide-avatar batch output when verdicts land.
 - ⚪ Device retest of the revamped sitting screen on Sean's iPhone (Expo Go + local
   stack, ~15 min): hands-free VAD start/stop, expo-video playback, upload. Gates
   everything sitting-related.
