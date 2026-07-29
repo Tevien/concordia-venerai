@@ -8,7 +8,7 @@ Product code and technical docs live in the monorepo one level up
 detailed per-service evidence. **This board is the current-status source of
 truth**; update it as work moves.
 
-Last full update: **2026-07-30**.
+Last full update: **2026-07-31**.
 
 ## At a glance
 
@@ -24,8 +24,9 @@ Last full update: **2026-07-30**.
 | Apple Developer enrollment (DUNS 234989532 ready) | high | ship | 🔴 user action | Apple verification days |
 | EAS account + project link (slug `venerai`) | high | ship | 🟢 done 2026-07-25 | - |
 | TestFlight build + both phones as internal testers | high | ship | ⚪ ready to fire | Apple enrollment + HTTPS backend |
-| AWS Activate credits | high | fund | 🟡 re-application SUBMITTED 2026-07-29 | awaiting review |
-| AWS deploy (Terraform + deploy script, ECS/RDS/S3/SQS) | high | ship | 🔴 written+validated, awaiting credentials | Activate credits |
+| AWS Activate credits | high | fund | 🟢 GRANTED $1,000 (2026-07-31) | - |
+| NVIDIA Inception | med | fund | 🔴 rejected (automatic, no reason) | do not re-apply blind |
+| AWS deploy (Terraform + deploy script, ECS/RDS/S3/SQS) | high | ship | 🔵 UNBLOCKED — awaiting AWS account credentials on the Mac | user: aws configure |
 | Marketing site vener.ai (product/founder/terms + sealed interest form) | med | live | 🟢 live; priority-access framing 2026-07-30 | - |
 | **Website visual upgrade + real product demos** | **high (URGENT)** | build | ⚪ todo | rights-clean demo faces (guide face decision) |
 | Pitch deck (Activate, measured economics) | med | fund | 🟢 final PDF | - |
@@ -68,7 +69,10 @@ Last full update: **2026-07-30**.
 
 - 🔴 **Apple enrollment** — user to enroll (individual = fastest, convertible later;
   org required before public release, App Review 5.1.1(ix)).
-- 🔴 **AWS deploy** — waiting on Activate credits (re-application pending).
+- 🔴 **AWS deploy** — credits GRANTED; needs user to configure AWS credentials
+  locally, then run prompts/aws-deploy.md (confirm-before-apply). Budget note:
+  $1,000 ≈ 3–6 months of the starter footprint WITHOUT the GPU tier — deploy
+  core stack first (Kokoro fallback voice), GPU tier deliberately deferred.
 - 🔴 **GPU work** (guide clips, LoRA training, cloned-voice serving) — box loaned to
   another project; also stick-B RMA will take the box down when shipped.
 - 🔴 **iOS goal externals** — Apple + HTTPS backend (AWS, or Tailscale Serve interim
