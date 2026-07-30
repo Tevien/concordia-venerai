@@ -32,6 +32,7 @@ Last full update: **2026-07-31**.
 | **Website visual upgrade + real product demos** | **high (URGENT)** | build | ⚪ todo | rights-clean demo faces (guide face decision) |
 | Pitch deck (Activate, measured economics) | med | fund | 🟢 final PDF | - |
 | GPU box hardware (bad RAM stick B) | med | ops | 🔴 Corsair RMA (full kit must ship) | user RMA + box downtime |
+| Second GPU: RTX 3060 12GB → dedicated voice card (retires voice-parking; opens LoRA experiments) | med | ops | 🔵 bought 2026-07-31; install + wire-up next | physical install |
 | Full-twin training (voice pack live; persona/face LoRA trainers) | med | build | 🔵 voice pack live; LoRA runs need CUDA time | GPU box availability |
 | Engineering hardening backlog (Alembic, media-leak on delete, resumable uploads, retrieval eval) | med | build | ⚪ backlog | - |
 | Android build | low | ship | ⚪ later | iOS first |
