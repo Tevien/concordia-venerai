@@ -51,6 +51,12 @@ Last full update: **2026-07-31**.
 
 ## Up next
 
+- ⚪ **Continuity & portability promise** ("your archive outlives us"): FAQ +
+  terms copy guaranteeing full export in open formats and a wind-down export
+  window — HereAfter's shutdown (competitor-watch.md) makes abandonment the
+  question every family will ask; answer it structurally before the pilot.
+- ⚪ "Bring your recordings" import angle for displaced HereAfter families
+  (functionally supported today via artifact uploads; positioning work only).
 - ⚪ **URGENT: website visual upgrade + demos** — screen recordings of the app,
   a guide-avatar clip, a living-portrait reply. Constraint: rights-clean faces
   only (generated guide face / Sean's own footage — never Unsplash-derived
