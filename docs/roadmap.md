@@ -10,7 +10,7 @@ humour and way of seeing the world — so families can keep talking with them.
 An avatar-guided sitting that an elderly person can complete alone becomes a
 grounded, generative twin: cloned voice, gently moving portrait, answers grounded
 in what they actually recorded, refusal to invent. Consent-first, priced for
-families (Weave £79–99 + £9–14/mo), never advertising or data sales. "Good" looks
+families (Weave $30 + $10/mo incl. a portrait moment a day), never advertising or data sales. "Good" looks
 like: a grandmother completes a sitting unassisted, her family talks with her
 portrait for years, and no one is ever misled by it.
 

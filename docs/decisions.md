@@ -5,6 +5,33 @@ Newest first. One entry per decision; keep it short.
 
 ---
 
+## 2026-07-31 - Pricing: $30 Weave + $10/mo including one portrait moment per day
+
+**Status:** accepted (implemented 5d70bc8; supersedes the £79-99 + £9-14 hypothesis)
+
+**Context:** the original Weave fee was large for a product asking hesitant,
+grief-adjacent buyers to commit; the goal for launch is break-even early,
+profit with volume, affordable entry. Separately, a monthly video pool of 10
+could be burned in a couple of hours.
+
+**Decision:** Weave $30 (~£24) one-time (still ~15x its ~$2 compute cost - it
+keeps its commitment/positioning function at a kinder price); subscription
+$10 (~£8)/month INCLUDING one portrait moment per day. Video metering moves
+from monthly(10) to daily(1) buckets in the API - the daily moment is both the
+cost guard and better product design (a gentle ritual; corpus and habit grow
+daily). Deck ARR recomputed at ~£96/yr (upside 2028: £96M+).
+
+**Alternatives considered:** keep £79-99 (deterrent at pilot); no fee at all
+(loses commitment + commissioned-portrait positioning); monthly pool with
+burst caps (complex, still binge-able).
+
+**Consequences:** maximal daily users at the serverless GPU rung cost $6-7.5/mo
+against $10 - thin until utilisation or dedicated GPUs cut per-moment cost;
+acceptable because average usage sits well under cap and phase-A renders cost
+~electricity. Watch the moment-usage distribution in the pilot.
+
+---
+
 ## 2026-07-31 - Phase-A GPU architecture: no cloud GPUs; the home box pulls render jobs
 
 **Status:** accepted (built same day, monorepo 13c34a2)
