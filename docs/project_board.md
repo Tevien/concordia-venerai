@@ -72,6 +72,13 @@ Last full update: **2026-08-01**.
   over (≈1 day, build when AWS lands).
 - ⚪ Corpus-growth metrics ("Ark" evidence for seed stage): hours/twin over time,
   sittings, conversations by twin age, churn by twin age.
+- ⚪ **Daily question / diary mode** (founder idea, 2026-08-02): after the twin
+  exists, one gentle question a day (unanswered bank + generated follow-ups) or
+  a freeform "tell me about today" diary note — a 2-minute ritual that deepens
+  the twin with dated, episodic memories. Pairs naturally with the daily
+  portrait moment (same cadence) and IS the Ark growth engine + retention
+  mechanic. Needs: notification permission, dated-memory support in retrieval,
+  question-picker endpoint.
 
 ## Blocked
 
