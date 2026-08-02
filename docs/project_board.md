@@ -37,6 +37,7 @@ Last full update: **2026-08-02** (evening).
 | Local chat floor: Qwen3-4B-Instruct-2507 (llama.cpp, 3060, 63+ tok/s) | high | build | 🟢 live — chain NIM→local→HF; the floor carried an ENTIRE weave when NIM was cold | - |
 | **MILESTONE: first twin built by the product's own app, end-to-end** (founder, 17 answers, 49 memories, portrait from in-app photo, $0 external AI) | high | validate | 🟢 2026-08-02 | - |
 | Chat round 2: voice-coming indicator, speak-to-talk (local Whisper), in-chat portrait moments | high | build | 🟢 c79a970 — device test next | - |
+| Admin monitor /admin (services+homes, users, twins, storage) with passwordless OTP login | med | build | 🟢 live, E2E verified; sole admin sean@vener.ai | SMTP/SES for real email |
 | Voice pack for founder twin (8 curated refs, rotation live) | med | build | 🟢 published — likeness A/B by founder pending | - |
 | Full-twin training (voice pack live; persona/face LoRA trainers) | med | build | 🔵 voice pack live; LoRA runs need CUDA time | GPU box availability |
 | Engineering hardening backlog (Alembic, media-leak on delete, resumable uploads, retrieval eval) | med | build | ⚪ backlog | - |
