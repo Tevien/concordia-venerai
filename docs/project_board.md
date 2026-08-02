@@ -8,7 +8,7 @@ Product code and technical docs live in the monorepo one level up
 detailed per-service evidence. **This board is the current-status source of
 truth**; update it as work moves.
 
-Last full update: **2026-08-01**.
+Last full update: **2026-08-02**.
 
 ## At a glance
 
@@ -33,6 +33,7 @@ Last full update: **2026-08-01**.
 | Pitch deck (Activate, measured economics) | med | fund | 🟢 final PDF | - |
 | GPU box hardware (bad RAM stick B) | med | ops | 🔴 Corsair RMA (full kit must ship) | user RMA + box downtime |
 | Second GPU: RTX 3060 12GB dedicated voice card | med | ops | 🟢 installed 2026-08-01; cohabitation PROVEN (render 100% + synth 72% simultaneous); parking retired | - |
+| Local models service (Whisper + embeddings + Kokoro on 3060) + NIM chat primary | high | build | 🟢 live 2026-08-02 — product survives dead HF account (fallbacks intact) | - |
 | Full-twin training (voice pack live; persona/face LoRA trainers) | med | build | 🔵 voice pack live; LoRA runs need CUDA time | GPU box availability |
 | Engineering hardening backlog (Alembic, media-leak on delete, resumable uploads, retrieval eval) | med | build | ⚪ backlog | - |
 | Android build | low | ship | ⚪ later | iOS first |
