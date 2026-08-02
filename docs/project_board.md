@@ -64,7 +64,18 @@ Last full update: **2026-08-02** (evening).
   question every family will ask; answer it structurally before the pilot.
 - ⚪ "Bring your recordings" import angle for displaced HereAfter families
   (functionally supported today via artifact uploads; positioning work only).
-- ⚪ **URGENT: website visual upgrade + demos** — screen recordings of the app,
+- ⚪ **Ambient living portraits** (founder vision 2026-08-03): the twin's frame
+  is always alive — pre-rendered, randomized idle reel (breathing, smile,
+  glance, wave, walk-off/empty-frame/walk-back) as a weighted playlist; the
+  portrait-moment button plays an "approach" clip first ("they come over").
+  Pre-render ~6-10 short clips per twin post-weave (~$2 one-time inside the
+  Weave margin, ~5MB download-once). Engine note: EchoMimic is audio-driven —
+  idle motion needs the Wan i2v pipeline with motion prompts (same weights,
+  new pipeline) or the near-silent-audio trick; walk-off from a bust portrait
+  is the stretch goal. Non-verbal only: ambience, not testimony.
+- ⚪ **URGENT: website visual upgrade + demos** (now incl. the synthetic guide
+  as an alpha-video sprite moving over page elements — waves at the CTA,
+  peeks from section edges; render on flat bg → matte → VP9/HEVC alpha) — screen recordings of the app,
   a guide-avatar clip, a living-portrait reply. Constraint: rights-clean faces
   only (generated guide face / Sean's own footage — never Unsplash-derived
   talking renders). Reuses the guide-avatar batch output when verdicts land.

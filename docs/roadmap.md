@@ -35,6 +35,7 @@ corpus. Deliberately out of pitch materials until pilot data exists.
 - [ ] Hardening: Alembic, delete-order media leak, resumable uploads, retrieval eval set
 
 **Later** (bets, not yet committed)
+- [ ] Ambient living portraits: always-alive idle reel per twin + approach transitions (app) and the guide sprite roaming the website
 - [ ] Founding-families pilot: 25 families, 2026 H2, cost-covering contribution
 - [ ] Persona/face LoRA training on real CUDA time; persona-LoRA serving (vLLM)
 - [ ] Conversational interviewer (Option C: dynamic follow-ups mapped back to question-bank coverage)
