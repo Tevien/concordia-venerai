@@ -5,6 +5,37 @@ Newest first. One entry per decision; keep it short.
 
 ---
 
+## 2026-08-02 - Passwordless login (emailed one-time code) as the sole method — at cloud launch
+
+**Status:** accepted (build at AWS deploy, when an email sender exists)
+
+**Context:** passwords are the wrong tool for this audience: elderly users
+forget them, families share them, resets are the #1 support burden — and a
+password database is pure liability for data this sensitive. Founder asked
+whether OTP-only is better.
+
+**Decision:** at cloud launch, replace passwords with a 6-digit emailed code
+(SES once AWS is live; codes in Redis with short TTL + attempt limits).
+Two conditions make it work for a grandmother: (1) LONG sessions -
+"remember this device" ~90 days with silent refresh, so login is a rare
+event done with family help, not a daily hurdle; (2) the family-assisted
+first sign-in is part of the sitting-setup ritual. Admin page uses the same
+flow. Until the email sender exists, local dev keeps passwords.
+
+**Alternatives considered:** password + email reset (same takeover ceiling -
+email - but adds a breachable hash DB and forgetting); social logins
+(adding third-party login would trigger Apple's Sign-in-with-Apple
+requirement and adds trackers we don't want); SMS codes (costs, SIM-swap,
+elderly users change numbers).
+
+**Consequences:** email deliverability becomes an availability dependency
+(SES reputation, spam-folder guidance in the invite); account takeover
+surface concentrates on the email account - acceptable because password
+systems with email reset share that ceiling; no more password hashes stored
+anywhere. ADMIN_EMAILS narrowed to sean@vener.ai (2026-08-02).
+
+---
+
 ## 2026-07-31 - Pricing: $30 Weave + $10/mo including one portrait moment per day
 
 **Status:** accepted (implemented 5d70bc8; supersedes the £79-99 + £9-14 hypothesis)
