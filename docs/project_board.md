@@ -37,7 +37,7 @@ Last full update: **2026-08-02** (evening).
 | Local chat floor: Qwen3-4B-Instruct-2507 (llama.cpp, 3060, 63+ tok/s) | high | build | 🟢 live — chain NIM→local→HF; the floor carried an ENTIRE weave when NIM was cold | - |
 | **MILESTONE: first twin built by the product's own app, end-to-end** (founder, 17 answers, 49 memories, portrait from in-app photo, $0 external AI) | high | validate | 🟢 2026-08-02 | - |
 | Chat round 2: voice-coming indicator, speak-to-talk (local Whisper), in-chat portrait moments | high | build | 🟢 c79a970 — device test next | - |
-| Admin monitor /admin (services+homes, users, twins, storage) with passwordless OTP login | med | build | 🟢 live, E2E verified; sole admin sean@vener.ai | SMTP/SES for real email |
+| Admin monitor /admin: services+homes, users, twins, storage, LIVE LOG WINDOW, twin RESET/ERASE (GDPR) buttons; OTP login over REAL EMAIL (SMTP2GO) | med | build | 🟢 live, E2E verified | - |
 | Voice pack for founder twin (8 curated refs, rotation live) | med | build | 🟢 published — likeness A/B by founder pending | - |
 | Full-twin training (voice pack live; persona/face LoRA trainers) | med | build | 🔵 voice pack live; LoRA runs need CUDA time | GPU box availability |
 | Engineering hardening backlog (Alembic, media-leak on delete, resumable uploads, retrieval eval) | med | build | ⚪ backlog | - |
@@ -72,6 +72,10 @@ Last full update: **2026-08-02** (evening).
   stack, ~15 min): hands-free VAD start/stop, expo-video playback, upload. Gates
   everything sitting-related.
 - ⚪ Sean's full self-sitting → iterate on flow annoyances → only then nan.
+- ⚪ Voice pack curation v2: the 8 phone-mic refs lost to the single clean
+  reference (founder A/B 2026-08-02) — stricter quality gating (loudness/SNR
+  floor, min duration, K=3-4), and prefer the base ref until a pack proves
+  itself; re-record reading passages in quiet as the real fix.
 - ⚪ Synthetic warmup render at talking-head deploy (first render after spawn pays
   one-time T5 encode; make it invisible).
 - ⚪ Local→cloud data export script (pg_dump + media→S3) so pre-AWS sittings carry
