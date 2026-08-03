@@ -83,6 +83,15 @@ Last full update: **2026-08-02** (evening).
   stack, ~15 min): hands-free VAD start/stop, expo-video playback, upload. Gates
   everything sitting-related.
 - ⚪ Sean's full self-sitting → iterate on flow annoyances → only then nan.
+- ⚪ **Voice fine-tune tier** (the real "more of my voice" answer): per-person
+  TTS fine-tuning from the training pipeline's LJSpeech dataset. Licence
+  verdicts: StyleTTS2 (MIT) = the candidate; F5-TTS & Fish-Speech weights are
+  non-commercial (hard fail); XTTS already rejected. ~20 min of founder audio
+  usable today; grows with every answered question. Until then: zero-shot
+  Chatterbox with adherence-first defaults (cfg 0.2 / exaggeration 0.4, the
+  founder's accent A/B winner 2026-08-03) + combined dual-passage reference
+  (both now in production, d34fdca) — mitigates the American drift, cannot
+  eliminate it.
 - ⚪ Voice pack curation v2: the 8 phone-mic refs lost to the single clean
   reference (founder A/B 2026-08-02) — stricter quality gating (loudness/SNR
   floor, min duration, K=3-4), and prefer the base ref until a pack proves
