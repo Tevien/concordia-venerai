@@ -62,6 +62,9 @@ Last full update: **2026-08-02** (evening).
   terms copy guaranteeing full export in open formats and a wind-down export
   window — HereAfter's shutdown (competitor-watch.md) makes abandonment the
   question every family will ask; answer it structurally before the pilot.
+- ⚪ Batch-render tail-trim: Whisper word-timestamps to cut TTS babble after
+  the last intended word (found on web_ask_home: low-cfg continuation
+  artifact) — belongs in render_guide_clips.py phase 1.
 - ⚪ "Bring your recordings" import angle for displaced HereAfter families
   (functionally supported today via artifact uploads; positioning work only).
 - ⚪ **Ambient living portraits** (founder vision 2026-08-03): the twin's frame
