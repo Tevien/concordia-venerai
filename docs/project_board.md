@@ -29,7 +29,7 @@ Last full update: **2026-08-02** (evening).
 | AWS deploy (Terraform + deploy script, ECS/RDS/S3/SQS + render queue) | high | ship | 🔵 UNBLOCKED — awaiting AWS account credentials on the Mac | user: aws configure |
 | Async render pull-worker (phase-A GPU: box renders cloud jobs) | high | build | 🟢 built + 68 tests (13c34a2); live test at AWS deploy | - |
 | Marketing site vener.ai (product/founder/terms + sealed interest form) | med | live | 🟢 live; priority-access framing 2026-07-30 | - |
-| **Website visual upgrade + real product demos** | **high (URGENT)** | build | 🔵 4 guide clips rendered (B recipe: ag5.5/as1.2/24 steps/loudnorm — the lip-sync A/B winner); site sections next | - |
+| **Website visual upgrade + real product demos** | **high (URGENT)** | build | 🔵 4 guide clips rendered (B recipe: ag5.5/as1.2/24 steps/loudnorm — the lip-sync A/B winner); site sections LIVE on vener.ai (hero + ask-demo + CTA) | remaining: app screen-recordings S4/S5 |
 | Pitch deck (Activate, measured economics) | med | fund | 🟢 final PDF | - |
 | GPU box hardware (bad RAM stick B) | med | ops | 🔴 Corsair RMA (full kit must ship) | user RMA + box downtime |
 | Second GPU: RTX 3060 12GB dedicated voice card | med | ops | 🟢 installed 2026-08-01; cohabitation PROVEN (render 100% + synth 72% simultaneous); parking retired | - |
