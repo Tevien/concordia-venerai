@@ -65,18 +65,26 @@ Last full update: **2026-08-02** (evening).
 - 🟢 Batch-render tail-trim: DONE — word-timestamp trim + sentence-aware
   segmentation live in render_guide_clips.py phase 1.5 (trimmed 8+ lines in
   the 2026-08-04 app batch).
-- ⚪ **Realism ladder** (closing the gap to Synthesia-class output, in effort
-  order): (1) temporal-aware face restoration/SR pass on rendered frames —
-  cheapest visible win, mind flicker (per-frame GFPGAN flickers; use
-  video-aware restorers); (2) two-stage render: Wan/EchoMimic motion → mouth
-  re-render pass (LatentSync/MuseTalk-class) for crisper visemes; (3) capture
-  ~30-60s consented enrollment VIDEO during the sitting (the Synthesia cheat:
-  real footage of the subject speaking) → unlocks real-footage idle reels +
-  reenactment-style rendering (LivePortrait drives real frames) + future
-  per-twin LoRA; (4) English-viseme fine-tune of EchoMimicV3 (it ships a
-  chinese-wav2vec2 audio encoder — a LoRA + English audio-encoder swap on
-  HDTF/CelebV-class data is feasible on our cards). Board note: (3) is a
-  product/UX decision, not just ML — one more capture step in the sitting.
+- ⚪ **Quality envelope — STANDING priority (founder directive 2026-08-04):
+  keep pushing render realism on BOTH pipelines.** Renderer-level rungs
+  (shared, in effort order): (1) temporal-aware face restoration/SR pass on
+  rendered frames — cheapest visible win, mind flicker (per-frame GFPGAN
+  flickers; use video-aware restorers); (2) two-stage render: Wan/EchoMimic
+  motion → mouth re-render pass (LatentSync/MuseTalk-class) for crisper
+  visemes; (3) English-viseme fine-tune of EchoMimicV3 (it ships a
+  chinese-wav2vec2 audio encoder — LoRA + English audio-encoder swap on
+  HDTF/CelebV-class data, overnight-scale on our cards).
+  **Interviewer (guide) track:** apply (1)+(2) to the 18 bundled masters and
+  re-bundle (async = polish is free); remaining 26 question lines at the same
+  bar; multi-take rendering (2-3 seeds per line, pick the best take — the
+  guide is rendered once, watched thousands of times); idle/ambient guide loop
+  between questions (ties into ambient living portraits below).
+  **Living portrait (twin) track:** same polish passes on portrait moments;
+  ~30-60s consented enrollment VIDEO as a sitting step (the Synthesia cheat:
+  real footage of the subject speaking) → real-footage idle reels,
+  reenactment-style rendering (LivePortrait-class drives real frames), and
+  per-twin LoRA later — a product/UX + consent-copy decision, not just ML;
+  voice fine-tune tier (StyleTTS2) is this track's audio rung.
 - ⚪ "Bring your recordings" import angle for displaced HereAfter families
   (functionally supported today via artifact uploads; positioning work only).
 - ⚪ **Ambient living portraits** (founder vision 2026-08-03): the twin's frame
