@@ -18,7 +18,7 @@ Last full update: **2026-08-02** (evening).
 | Voice cloning service (Chatterbox, containerized) | high | build | 🟢 proven | box currently loaned out |
 | Talking portrait (EchoMimicV3 + persistent-model server) | high | build | 🟢 proven (WSL warm render 264s/125f) | box currently loaned out |
 | Per-twin usage quotas (video allowance, message fair-use) | high | build | 🟢 62 tests green | - |
-| Guide avatar clips (pre-rendered interviewer) + hands-free sitting screen | high | build | 🔵 FRONTAL FACE PICKED 2026-08-04 (IP-Adapter identity 0.8, candidate 5 — pose from prompt, face from her); app portrait swapped (df3a24e); 18-line app batch RENDERING at native 768² (seq-offload + tiling, ~15h) in `guide-clips-app-768` | batch completion → compress + bundle |
+| Guide avatar clips (pre-rendered interviewer) + hands-free sitting screen | high | build | 🔵 FRONTAL FACE PICKED 2026-08-04 (IP-Adapter identity 0.65, candidate 4 — pose from prompt, face from her); app portrait swapped (4efbde0); 18-line app batch RENDERING at native 768² (seq-offload + tiling, ~15h) in `guide-clips-app-768` | batch completion → compress + bundle |
 | Sitting refinement with Sean as test subject | high | validate | ⚪ next up | device retest first |
 | Nan's sitting | high | validate | ⚪ deliberately postponed (2026-07-28) | refinement above |
 | Apple Developer enrollment (DUNS 234989532 ready) | high | ship | 🔴 user action | Apple verification days |
@@ -48,7 +48,7 @@ Last full update: **2026-08-02** (evening).
 - 🔵 **Guide avatar — app batch at full quality**: frontal face solved via IP-Adapter
   plus-face (SDXL txt2img composes the frontal pose, adapter carries her identity;
   img2img strength sweeps could NOT turn the body — pose lives in early denoise).
-  Sean's pick 2026-08-04: candidate 5 (identity 0.8) — "all recognisably her",
+  Sean's pick 2026-08-04: candidate 4 (identity 0.65) — "all recognisably her",
   shoulders+face forward, smaller head = more forgiving lip-sync at 768². Now
   rendering: 18 lines (3 essentials + 10 heart + 5 encouragements) native 768²,
   B recipe, sequential offload + VAE tiling on the 5070 Ti, voice up on the 3060

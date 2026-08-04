@@ -7,7 +7,7 @@ Newest first. One entry per decision; keep it short.
 
 ## 2026-08-04 - Guide's frontal pose: IP-Adapter identity transfer, not img2img
 
-**Status:** accepted (pick made: candidate 5, identity scale 0.8)
+**Status:** accepted (pick made: candidate 4, identity scale 0.65)
 
 **Context:** the app guide must face the user directly; the chosen site face
 (candidate 6) is three-quarter. img2img strength sweeps (0.45→0.75) kept the
@@ -21,8 +21,10 @@ Gotcha worth remembering: the vit-h face adapter needs
 `image_encoder_folder="models/image_encoder"` (ViT-H, 1280-d) — the sdxl_models
 default encoder is ViT-bigG (1664-d) and fails with a shape mismatch.
 Consequence: site and app use different photos of the same woman (acceptable —
-that's how real people photograph); identity 0.8 held likeness across all nine
-candidates.
+that's how real people photograph); every scale (0.5/0.65/0.8) held likeness —
+"all recognisably her" — so the pick came down to pose, won at 0.65 (runner-up
+at 0.5). Process lesson: the contact sheet had no printed indices, causing a
+1-based vs 0-based miscount on the first pick — sheets now number every thumb.
 
 ---
 
