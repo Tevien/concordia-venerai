@@ -5,6 +5,27 @@ Newest first. One entry per decision; keep it short.
 
 ---
 
+## 2026-08-04 - Guide's frontal pose: IP-Adapter identity transfer, not img2img
+
+**Status:** accepted (pick made: candidate 5, identity scale 0.8)
+
+**Context:** the app guide must face the user directly; the chosen site face
+(candidate 6) is three-quarter. img2img strength sweeps (0.45→0.75) kept the
+body turned — pose is decided in early denoise steps, which img2img inherits
+from the source image. Higher strength would free the pose only by destroying
+the identity.
+
+**Decision:** decouple the two: SDXL txt2img composes from a frontal prompt
+(owns the pose), IP-Adapter plus-face carries her identity from the reference.
+Gotcha worth remembering: the vit-h face adapter needs
+`image_encoder_folder="models/image_encoder"` (ViT-H, 1280-d) — the sdxl_models
+default encoder is ViT-bigG (1664-d) and fails with a shape mismatch.
+Consequence: site and app use different photos of the same woman (acceptable —
+that's how real people photograph); identity 0.8 held likeness across all nine
+candidates.
+
+---
+
 ## 2026-08-02 - Passwordless login (emailed one-time code) as the sole method — at cloud launch
 
 **Status:** accepted (build at AWS deploy, when an email sender exists)

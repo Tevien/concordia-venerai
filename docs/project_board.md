@@ -18,7 +18,7 @@ Last full update: **2026-08-02** (evening).
 | Voice cloning service (Chatterbox, containerized) | high | build | 🟢 proven | box currently loaned out |
 | Talking portrait (EchoMimicV3 + persistent-model server) | high | build | 🟢 proven (WSL warm render 264s/125f) | box currently loaned out |
 | Per-twin usage quotas (video allowance, message fair-use) | high | build | 🟢 62 tests green | - |
-| Guide avatar clips (pre-rendered interviewer) + hands-free sitting screen | high | build | 🔵 committed (3913a82), device-untested | GPU box loan; quality/voice verdicts |
+| Guide avatar clips (pre-rendered interviewer) + hands-free sitting screen | high | build | 🔵 FRONTAL FACE PICKED 2026-08-04 (IP-Adapter identity 0.8, candidate 5 — pose from prompt, face from her); app portrait swapped (df3a24e); 18-line app batch RENDERING at native 768² (seq-offload + tiling, ~15h) in `guide-clips-app-768` | batch completion → compress + bundle |
 | Sitting refinement with Sean as test subject | high | validate | ⚪ next up | device retest first |
 | Nan's sitting | high | validate | ⚪ deliberately postponed (2026-07-28) | refinement above |
 | Apple Developer enrollment (DUNS 234989532 ready) | high | ship | 🔴 user action | Apple verification days |
@@ -45,16 +45,16 @@ Last full update: **2026-08-02** (evening).
 
 ## In progress
 
-- 🔵 **Guide avatar (Option B)**: batch driver + serve-protocol renderer work; female
-  guide voice generated (Kokoro ref → Chatterbox clone); quality A/B samples on the
-  Mac (`data/guide-*.mp4`) awaiting Sean's three verdicts (voice ✓/✗, steps tier,
-  face choice — current portrait is a placeholder stock photo, shipped guide needs a
-  generated/licensed face). Batch = resumable; ~5h at interactive settings, ~2 days
-  at premium on WSL. Paused while the GPU box is loaned out.
-- 🟡 **AWS Activate re-application submitted 2026-07-29** (site made eligible first:
-  product/founder/company/terms + company no. 17335051; launch date given: Oct 2026;
-  products: ECS/ALB/RDS/ElastiCache/S3/SQS/ECR/KMS/ACM/CloudWatch + EC2 G6 L4 GPU).
-  Site reframed 2026-07-30: waitlist → "register your interest / priority access".
+- 🔵 **Guide avatar — app batch at full quality**: frontal face solved via IP-Adapter
+  plus-face (SDXL txt2img composes the frontal pose, adapter carries her identity;
+  img2img strength sweeps could NOT turn the body — pose lives in early denoise).
+  Sean's pick 2026-08-04: candidate 5 (identity 0.8) — "all recognisably her",
+  shoulders+face forward, smaller head = more forgiving lip-sync at 768². Now
+  rendering: 18 lines (3 essentials + 10 heart + 5 encouragements) native 768²,
+  B recipe, sequential offload + VAE tiling on the 5070 Ti, voice up on the 3060
+  (`queue/running/20-app-clips-768.job`, ~15h, resumable). Masters archived; app
+  bundles compressed derivatives. Site keeps candidate 6 (three-quarter) — same
+  woman, different photo; remaining 26 question lines render later.
 
 ## Up next
 
