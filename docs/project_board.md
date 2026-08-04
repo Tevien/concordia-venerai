@@ -18,7 +18,7 @@ Last full update: **2026-08-02** (evening).
 | Voice cloning service (Chatterbox, containerized) | high | build | 🟢 proven | box currently loaned out |
 | Talking portrait (EchoMimicV3 + persistent-model server) | high | build | 🟢 proven (WSL warm render 264s/125f) | box currently loaned out |
 | Per-twin usage quotas (video allowance, message fair-use) | high | build | 🟢 62 tests green | - |
-| Guide avatar clips (pre-rendered interviewer) + hands-free sitting screen | high | build | 🔵 FRONTAL FACE PICKED 2026-08-04 (IP-Adapter identity 0.65, candidate 4 — pose from prompt, face from her); app portrait swapped (4efbde0); 18-line app batch RENDERING at native 768² (seq-offload + tiling, ~15h) in `guide-clips-app-768` | batch completion → compress + bundle |
+| Guide avatar clips (pre-rendered interviewer) + hands-free sitting screen | high | build | 🟢 BATCH DONE + BUNDLED 2026-08-04 (fb3eeba): all 18 lines (essentials+heart+enc) at native 768², frontal candidate 4, in the app — questions play as her video, 7.8 MB total, masters archived `data/guide-clips-app-768` | device retest; 26 deeper lines later |
 | Sitting refinement with Sean as test subject | high | validate | ⚪ next up | device retest first |
 | Nan's sitting | high | validate | ⚪ deliberately postponed (2026-07-28) | refinement above |
 | Apple Developer enrollment (DUNS 234989532 ready) | high | ship | 🔴 user action | Apple verification days |
@@ -62,9 +62,21 @@ Last full update: **2026-08-02** (evening).
   terms copy guaranteeing full export in open formats and a wind-down export
   window — HereAfter's shutdown (competitor-watch.md) makes abandonment the
   question every family will ask; answer it structurally before the pilot.
-- ⚪ Batch-render tail-trim: Whisper word-timestamps to cut TTS babble after
-  the last intended word (found on web_ask_home: low-cfg continuation
-  artifact) — belongs in render_guide_clips.py phase 1.
+- 🟢 Batch-render tail-trim: DONE — word-timestamp trim + sentence-aware
+  segmentation live in render_guide_clips.py phase 1.5 (trimmed 8+ lines in
+  the 2026-08-04 app batch).
+- ⚪ **Realism ladder** (closing the gap to Synthesia-class output, in effort
+  order): (1) temporal-aware face restoration/SR pass on rendered frames —
+  cheapest visible win, mind flicker (per-frame GFPGAN flickers; use
+  video-aware restorers); (2) two-stage render: Wan/EchoMimic motion → mouth
+  re-render pass (LatentSync/MuseTalk-class) for crisper visemes; (3) capture
+  ~30-60s consented enrollment VIDEO during the sitting (the Synthesia cheat:
+  real footage of the subject speaking) → unlocks real-footage idle reels +
+  reenactment-style rendering (LivePortrait drives real frames) + future
+  per-twin LoRA; (4) English-viseme fine-tune of EchoMimicV3 (it ships a
+  chinese-wav2vec2 audio encoder — a LoRA + English audio-encoder swap on
+  HDTF/CelebV-class data is feasible on our cards). Board note: (3) is a
+  product/UX decision, not just ML — one more capture step in the sitting.
 - ⚪ "Bring your recordings" import angle for displaced HereAfter families
   (functionally supported today via artifact uploads; positioning work only).
 - ⚪ **Ambient living portraits** (founder vision 2026-08-03): the twin's frame
