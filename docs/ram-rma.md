@@ -33,13 +33,41 @@ checksum-verified before trust (standing rule).
 
 ## Diagnosis (why it's conclusively stick B)
 
-Per-module isolation: each stick tested **alone, in the same DIMM slot**, with
-a pattern test — fill 22 GB with deterministic data, verify in three rounds.
+The conviction came at the end of a four-step exoneration chain (2026-07-13/14):
 
-- **Stick A:** three full rounds, zero errors.
-- **Stick B:** corruption in **all three rounds at the same address region**
-  (chunks 22–23; six corrupt reads total) — a consistent defective DRAM
-  region, not overclock instability (the kit never ran above JEDEC 2133).
+1. **Network exonerated** — the same 1 GB file downloaded twice hashed
+   identically.
+2. **Corruption located in the read path** — one unchanged 3 GB weights file
+   returned **five different sha256 values** across buffered reads, with zero
+   kernel errors logged.
+3. **Disk exonerated** — `O_DIRECT` reads of the same file (bypassing the
+   page cache) were stable **and matched the Hugging Face checksum**: the
+   bytes on the drive are perfect; they get mangled transiting RAM.
+4. **RAM convicted** — userspace pattern test (`~/venerai/ramtest.py`): fill
+   a large buffer with deterministic data in 256 MiB chunks, then re-verify
+   in three passes. With both sticks installed (40 GB tested): **37 corrupt
+   chunk-reads across 3 passes, clustered in one address region**.
+   Reproducible on demand.
+
+### Per-module isolation (each stick alone, same DIMM slot, same test)
+
+22.5 GiB fill (90 × 256 MiB chunks), three verification passes:
+
+| | Pass 1 | Pass 2 | Pass 3 | Total |
+|---|---|---|---|---|
+| **Stick A** | clean | clean | clean | **0 errors** |
+| **Stick B** | chunks 22–23 | chunks 22–23 | chunks 22–23 | **6 corrupt reads** |
+
+Stick B fails on the **same two adjacent 256 MiB chunks every pass** — the
+region ~5.5–6.0 GiB into the test buffer. Same-slot testing rules out the
+slot/board; identical failure location across passes (and across a reboot) is
+deterministic weak DRAM rows, not marginality — and the kit never ran above
+JEDEC 2133, so overclock instability is excluded by construction.
+
+Caveat for the form: a userspace test reports buffer offsets, not physical
+addresses (the kernel maps pages arbitrarily). If Corsair asks for physical
+addresses, an overnight **memtest86+** run (GRUB → Memory test) on stick B
+alone will name them; the six-read reproducibility above is normally enough.
 
 ## RMA form text (Dutch, ready to paste)
 
@@ -53,9 +81,9 @@ a pattern test — fill 22 GB with deterministic data, verify in three rounds.
 > hetzelfde geheugenslot, getest met een patroontest (22 GB vullen met
 > deterministische data en in drie rondes verifiëren). Module A doorstond drie
 > volledige rondes zonder één fout. Module B gaf in álle drie de rondes
-> corruptie op exact hetzelfde adresgebied (zes corrupte leesacties in totaal)
-> — een consistent defect gebied in het DRAM, geen instabiliteit door
-> overklokken.
+> corruptie op exact hetzelfde adresgebied — twee aangrenzende blokken van
+> 256 MiB, zes corrupte leesacties in totaal — een consistent defect gebied
+> in het DRAM, geen instabiliteit door overklokken.
 >
 > In de praktijk leidde dit tot beschadigde downloads, checksum-fouten
 > (CRC-mismatches) en vastlopers. Ik verzoek om vervanging van de defecte
@@ -73,8 +101,8 @@ a pattern test — fill 22 GB with deterministic data, verify in three rounds.
 > DIMM slot, with a pattern test (fill 22 GB with deterministic data, verify
 > in three passes). Module A passed three full passes with zero errors.
 > Module B produced corruption in all three passes at exactly the same
-> address region (six corrupt reads in total) — a consistent defective DRAM
-> region, not overclock instability.
+> address region — two adjacent 256 MiB blocks, six corrupt reads in total —
+> a consistent defective DRAM region, not overclock instability.
 >
 > In practice this caused corrupted downloads, checksum (CRC) mismatches and
 > crashes. I request replacement of the defective module under Corsair's
