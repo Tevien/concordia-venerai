@@ -21,7 +21,8 @@ Last full update: **2026-08-02** (evening).
 | Guide avatar clips (pre-rendered interviewer) + hands-free sitting screen | high | build | 🟢 BATCH DONE + BUNDLED 2026-08-04 (fb3eeba): all 18 lines (essentials+heart+enc) at native 768², frontal candidate 4, in the app — questions play as her video, 7.8 MB total, masters archived `data/guide-clips-app-768` | device retest; 26 deeper lines later |
 | Sitting refinement with Sean as test subject | high | validate | ⚪ next up | device retest first |
 | Nan's sitting | high | validate | ⚪ deliberately postponed (2026-07-28) | refinement above |
-| Apple Developer enrollment (DUNS 234989532 ready) | high | ship | 🔴 user action | Apple verification days |
+| Apple Developer enrollment (DUNS 234989532 ready) | high | ship | 🟡 submitted, in review (2026-08-09) | Apple verification |
+| Google Play org account | med | ship | 🟡 registered + $25 paid (2026-08-09), identity verification underway | Google verification |
 | EAS account + project link (slug `venerai`) | high | ship | 🟢 done 2026-07-25 | - |
 | TestFlight build + both phones as internal testers | high | ship | ⚪ ready to fire | Apple enrollment + HTTPS backend |
 | AWS Activate credits | high | fund | 🟢 GRANTED $1,000 (2026-07-31) | - |
@@ -41,7 +42,7 @@ Last full update: **2026-08-02** (evening).
 | Voice pack for founder twin (8 curated refs, rotation live) | med | build | 🟢 published — likeness A/B by founder pending | - |
 | Full-twin training (voice pack live; persona/face LoRA trainers) | med | build | 🔵 voice pack live; LoRA runs need CUDA time | GPU box availability |
 | Engineering hardening backlog (Alembic, media-leak on delete, resumable uploads, retrieval eval) | med | build | ⚪ backlog | - |
-| Android build | low | ship | ⚪ later | iOS first |
+| Android build (Beam Pro as test device) | med | ship | ⚪ ready once Play verification clears; Expo Go testable today | Play org verification |
 
 ## In progress
 
