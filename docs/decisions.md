@@ -5,7 +5,28 @@ Newest first. One entry per decision; keep it short.
 
 ---
 
-## 2026-08-04 - Guide's frontal pose: IP-Adapter identity transfer, not img2img
+## 2026-08-09 - App remodel: story-first, interviewer-led
+
+**Status:** accepted (founder direction after the device test of the clip-driven sitting)
+
+**Context:** real twin interaction must stay rationed (a few portrait moments per
+day, possibly purchasable extras later) to control GPU cost — so interaction
+cannot be the app's core loop. The device test confirmed the interviewer
+experience carries the product.
+
+**Decision:** rebuild the app around collecting the user's story. (1) Home =
+the list of people whose stories you keep; per person one state (gathering /
+ready to weave / woven) and one primary action. (2) The synthetic interviewer
+LEADS — she decides the next question; no question menus, no webform feel.
+(3) The weave button unlocks on a readiness threshold WITH an honest
+assessment of how good the twin will be (strengths/gaps). (4) Returning users
+get a daily journal: one insightful question per day, personalised from their
+existing memories where possible (bank fallback). (5) Uploads (photos/letters)
+are tucked away as a secondary option — note: the pipeline DOES use them today
+(letters → persona prompt, photo → portrait), so the UI de-emphasizes without
+removing capability. New `user-experience` gate agent created to hold this
+line. Alternatives rejected: interaction-centred app (cost + disappointment
+risk), data-management app (webform feel is exactly what testing flagged).
 
 **Status:** accepted (pick made: candidate 4, identity scale 0.65)
 

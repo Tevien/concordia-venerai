@@ -19,7 +19,7 @@ Last full update: **2026-08-02** (evening).
 | Talking portrait (EchoMimicV3 + persistent-model server) | high | build | 🟢 proven (WSL warm render 264s/125f) | box currently loaned out |
 | Per-twin usage quotas (video allowance, message fair-use) | high | build | 🟢 62 tests green | - |
 | Guide avatar clips (pre-rendered interviewer) + hands-free sitting screen | high | build | 🟢 BATCH DONE + BUNDLED 2026-08-04 (fb3eeba): all 18 lines (essentials+heart+enc) at native 768², frontal candidate 4, in the app — questions play as her video, 7.8 MB total, masters archived `data/guide-clips-app-768` | device retest; 26 deeper lines later |
-| Sitting refinement with Sean as test subject | high | validate | ⚪ next up | device retest first |
+| Sitting refinement with Sean as test subject | high | validate | 🟢 device test 2026-08-09: clip interview + video quality ACCEPTED for this version → remodel round issued | - |
 | Nan's sitting | high | validate | ⚪ deliberately postponed (2026-07-28) | refinement above |
 | Apple Developer enrollment (DUNS 234989532 ready) | high | ship | 🟡 submitted, in review (2026-08-09) | Apple verification |
 | Google Play org account | med | ship | 🟡 registered + $25 paid (2026-08-09), identity verification underway | Google verification |
@@ -46,16 +46,16 @@ Last full update: **2026-08-02** (evening).
 
 ## In progress
 
-- 🔵 **Guide avatar — app batch at full quality**: frontal face solved via IP-Adapter
-  plus-face (SDXL txt2img composes the frontal pose, adapter carries her identity;
-  img2img strength sweeps could NOT turn the body — pose lives in early denoise).
-  Sean's pick 2026-08-04: candidate 4 (identity 0.65) — "all recognisably her",
-  shoulders+face forward, smaller head = more forgiving lip-sync at 768². Now
-  rendering: 18 lines (3 essentials + 10 heart + 5 encouragements) native 768²,
-  B recipe, sequential offload + VAE tiling on the 5070 Ti, voice up on the 3060
-  (`queue/running/20-app-clips-768.job`, ~15h, resumable). Masters archived; app
-  bundles compressed derivatives. Site keeps candidate 6 (three-quarter) — same
-  woman, different photo; remaining 26 question lines render later.
+- 🔵 **App remodel: story-first, interviewer-led** (founder direction 2026-08-09
+  after the device test — video quality ACCEPTED for this version, decision log
+  entry same date): home = people list with gathering/ready/woven states; she
+  leads (no question menus/webforms); weave unlocks with an honest readiness
+  assessment (new `GET /twins/{id}/readiness`); daily journal with personalised
+  questions (new `GET /twins/{id}/journal/today`, chat-chain over memories, bank
+  fallback); uploads tucked away (pipeline still uses letters→persona,
+  photo→portrait). Building on branch `app-remodel-story-first`:
+  backend-platform-engineer (endpoints) + ui-app-developer (app) in parallel,
+  then the NEW `user-experience` gate agent reviews before merge.
 
 ## Up next
 
