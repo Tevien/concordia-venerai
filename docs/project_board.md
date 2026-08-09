@@ -53,9 +53,17 @@ Last full update: **2026-08-02** (evening).
   assessment (new `GET /twins/{id}/readiness`); daily journal with personalised
   questions (new `GET /twins/{id}/journal/today`, chat-chain over memories, bank
   fallback); uploads tucked away (pipeline still uses letters→persona,
-  photo→portrait). Building on branch `app-remodel-story-first`:
-  backend-platform-engineer (endpoints) + ui-app-developer (app) in parallel,
-  then the NEW `user-experience` gate agent reviews before merge.
+  photo→portrait). BUILT + GATED 2026-08-09 on branch `app-remodel-story-first`
+  (d3bf789 backend, df9f599 app): UX gate issued 4 BLOCKs (woven-twin demotion
+  on journal answer; mid-recording exit data loss; dishonest skip-close; Home
+  one-tap unconfirmed weave) — all fixed + 14 ranked notes applied; privacy
+  gate APPROVED consent rewording with required changes R1 (voice/audience/
+  photos disclosed in the spoken sentence) + R3 (asked_prompt persisted per
+  artifact) — both done, 91+22 tests green; R2 (consent clip re-render) queued
+  on the box. OPEN: founder device pass (stack is live; Expo Go serves the
+  branch now), then merge. Flagged founder decision: personalised journal
+  questions speak in device TTS, not her voice — guide-voice synth is the
+  fast-follow.
 
 ## Up next
 
