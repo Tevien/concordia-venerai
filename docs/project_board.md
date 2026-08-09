@@ -20,11 +20,11 @@ Last full update: **2026-08-02** (evening).
 | Per-twin usage quotas (video allowance, message fair-use) | high | build | 🟢 62 tests green | - |
 | Guide avatar clips (pre-rendered interviewer) + hands-free sitting screen | high | build | 🟢 BATCH DONE + BUNDLED 2026-08-04 (fb3eeba): all 18 lines (essentials+heart+enc) at native 768², frontal candidate 4, in the app — questions play as her video, 7.8 MB total, masters archived `data/guide-clips-app-768` | device retest; 26 deeper lines later |
 | Sitting refinement with Sean as test subject | high | validate | 🟢 device test 2026-08-09: clip interview + video quality ACCEPTED for this version → remodel round issued | - |
-| Nan's sitting | high | validate | ⚪ deliberately postponed (2026-07-28) | refinement above |
+| Nan's sitting | high | validate | ⚪ deliberately postponed (2026-07-28) | refinement above; **consent clip re-render (privacy gate R2) — HARD blocker for any non-founder sitting** |
 | Apple Developer enrollment (DUNS 234989532 ready) | high | ship | 🟡 submitted, in review (2026-08-09) | Apple verification |
 | Google Play org account | med | ship | 🟡 registered + $25 paid (2026-08-09), identity verification underway | Google verification |
 | EAS account + project link (slug `venerai`) | high | ship | 🟢 done 2026-07-25 | - |
-| TestFlight build + both phones as internal testers | high | ship | ⚪ ready to fire | Apple enrollment + HTTPS backend |
+| TestFlight build + both phones as internal testers | high | ship | ⚪ ready to fire | Apple enrollment + HTTPS backend + consent clip re-render (privacy R2) |
 | AWS Activate credits | high | fund | 🟢 GRANTED $1,000 (2026-07-31) | - |
 | NVIDIA Inception | med | fund | 🔴 rejected (automatic, no reason) | do not re-apply blind |
 | AWS deploy (Terraform + deploy script, ECS/RDS/S3/SQS + render queue) | high | ship | 🔵 UNBLOCKED — awaiting AWS account credentials on the Mac | user: aws configure |
