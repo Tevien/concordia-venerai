@@ -15,11 +15,9 @@ introduced (UX gate finding), and "our interviewer" is generic.
 **Decision:** she is **Clio**, after the Greek Muse of history — the keeper of
 what deserves remembering, which is literally her job. User-facing copy
 introduces her by name once (the begin button), then "she" is earned. Code
-identifiers stay `guide*` (stable API); the name is a copy-level fact. Her
-welcome line (2026-08-10, the first spoken use of the name) is gated on the
-founder hearing the rendered pronunciation — TTS may say "KLEE-oh" (the UK
-default, à la Renault) or "KLY-oh" (the classical muse); the founder decides
-from the clip, and a phonetic respelling in the synth text fixes it if wrong.
+identifiers stay `guide*` (stable API); the name is a copy-level fact. Pronunciation RESOLVED 2026-08-10 by
+voice-preview A/B: she is "KLY-oh" (classical muse) — every TTS path
+respells to "Cly-oh" via speakable(); written surfaces keep "Clio".
 
 ---
 
