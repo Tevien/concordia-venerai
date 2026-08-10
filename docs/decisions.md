@@ -5,6 +5,43 @@ Newest first. One entry per decision; keep it short.
 
 ---
 
+## 2026-08-10 - Launch economics v2: subscription-only pricing, cloud-GPU launch
+
+**Status:** accepted (founder direction; supersedes both 2026-07-31 decisions below)
+
+**Context:** the up-front $30 Weave fee existed to cover onboarding compute,
+but AWS bills in arrears — cash-flow only requires subscription income to
+land before the AWS bill, which monthly-in-advance billing guarantees. An
+up-front charge is pure friction against traction. On infra: the home box was
+the launch compute in phase-A; the founder now designates local GPUs as
+dev/test only.
+
+**Decision:**
+1. **Pricing: $10/mo subscription only, charged at signup** — no up-front
+   fee. The weave's compute cost (~$2-3 serverless) is absorbed by the first
+   month. Never-free is preserved: the first charge happens at signup, before
+   the sitting; there is no $0 window. Worst-case churn exposure is ~$2-3 per
+   month-one canceller — an acceptable acquisition cost. Extra moments, when
+   they arrive, are priced above their serverless cost (~$0.25/moment floor).
+2. **Launch compute is AWS, data is AWS.** Serverless per-second GPU
+   (Modal/RunPod-class, ~$0.15-0.25/moment) from subscriber #1 so cost tracks
+   usage; a dedicated full-time L4 VM becomes cheaper at roughly ~100 active
+   subscriptions and is adopted then. Local GPUs: product development and
+   testing only; the SQS pull-worker survives as an emergency contingency
+   valve, not a launch dependency.
+
+**Arithmetic check (recorded honestly):** 100 × $10 = $1,000 MRR gross vs
+full-time L4 ≈ $580-660/mo on-demand (≈$350-400 with a savings plan) + core
+stack ~$150-250 — the founder's "100 subs covers the L4" holds on GROSS
+revenue. It is MARGINAL after store commission (15-30% if billed through
+IAP): web checkout (~3%) vs store billing is now a first-order packaging
+decision, not a detail. Below 100 subs, serverless keeps infra ~$0.50-1.50
+per subscriber-month, so the model is cash-positive at every scale.
+Consequence: launch-plan.md and infra-scaling-review.md revised same day;
+pitch-deck economics need a refresh pass.
+
+---
+
 ## 2026-08-10 - Two-gate rule for interviewer clips: script review BEFORE render, transcript audit AFTER
 
 **Status:** accepted (founder rule)
@@ -105,7 +142,7 @@ anywhere. ADMIN_EMAILS narrowed to sean@vener.ai (2026-08-02).
 
 ## 2026-07-31 - Pricing: $30 Weave + $10/mo including one portrait moment per day
 
-**Status:** accepted (implemented 5d70bc8; supersedes the £79-99 + £9-14 hypothesis)
+**Status:** SUPERSEDED 2026-08-10 (up-front charge dropped — see "Launch economics v2")
 
 **Context:** the original Weave fee was large for a product asking hesitant,
 grief-adjacent buyers to commit; the goal for launch is break-even early,
@@ -132,7 +169,7 @@ acceptable because average usage sits well under cap and phase-A renders cost
 
 ## 2026-07-31 - Phase-A GPU architecture: no cloud GPUs; the home box pulls render jobs
 
-**Status:** accepted (built same day, monorepo 13c34a2)
+**Status:** SUPERSEDED 2026-08-10 for LAUNCH (cloud-GPU launch — see "Launch economics v2"); the pull-worker remains the dev/test path and an emergency contingency
 
 **Context:** $1,000 Activate credits ~ 3-6 months of core stack but only ~6
 weeks with a dedicated L4. The Weave needs no self-hosted GPU (HF APIs + CPU);

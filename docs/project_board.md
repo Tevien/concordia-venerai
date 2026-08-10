@@ -27,11 +27,11 @@ Last full update: **2026-08-02** (evening).
 | TestFlight build + both phones as internal testers | high | ship | ⚪ ready to fire | Apple enrollment + HTTPS backend (R2 consent clip: done) |
 | AWS Activate credits | high | fund | 🟢 GRANTED $1,000 (2026-07-31) | - |
 | NVIDIA Inception | med | fund | 🔴 rejected (automatic, no reason) | do not re-apply blind |
-| AWS deploy (Terraform + deploy script, ECS/RDS/S3/SQS + render queue) | high | ship | 🔵 UNBLOCKED — awaiting AWS account credentials on the Mac | user: aws configure |
-| Async render pull-worker (phase-A GPU: box renders cloud jobs) | high | build | 🟢 built + 68 tests (13c34a2); live test at AWS deploy | - |
+| AWS deploy (Terraform + deploy script, ECS/RDS/S3/SQS + render queue) | high | ship | 🔵 UNBLOCKED — awaiting AWS credentials; now THE LAUNCH COMPUTE (economics v2: serverless GPU from subscriber #1, L4 VM at ~100 subs) | user: aws configure |
+| Async render pull-worker (phase-A GPU: box renders cloud jobs) | med | build | 🟢 built + 68 tests; DEMOTED 2026-08-10 to dev/test + emergency contingency (cloud-GPU launch) | - |
 | Marketing site vener.ai (product/founder/terms + sealed interest form) | med | live | 🟢 live; priority-access framing 2026-07-30 | - |
 | **Website visual upgrade + real product demos** | **high (URGENT)** | build | 🔵 4 guide clips rendered (B recipe: ag5.5/as1.2/24 steps/loudnorm — the lip-sync A/B winner); site sections LIVE on vener.ai (hero + ask-demo + CTA) | remaining: app screen-recordings S4/S5 |
-| Pitch deck (Activate, measured economics) | med | fund | 🟢 final PDF | - |
+| Pitch deck (Activate, measured economics) | med | fund | 🟡 economics STALE (subscription-only pricing + cloud-GPU COGS 2026-08-10) — refresh before next investor use | - |
 | GPU box hardware (bad RAM stick B) | med | ops | 🔴 Corsair RMA (full kit must ship) | user RMA + box downtime |
 | Second GPU: RTX 3060 12GB dedicated voice card | med | ops | 🟢 installed 2026-08-01; cohabitation PROVEN (render 100% + synth 72% simultaneous); parking retired | - |
 | Local models service (Whisper + embeddings + Kokoro on 3060) + NIM chat primary | high | build | 🟢 live 2026-08-02 — product survives dead HF account (fallbacks intact) | - |
