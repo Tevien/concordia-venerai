@@ -15,9 +15,11 @@ introduced (UX gate finding), and "our interviewer" is generic.
 **Decision:** she is **Clio**, after the Greek Muse of history — the keeper of
 what deserves remembering, which is literally her job. User-facing copy
 introduces her by name once (the begin button), then "she" is earned. Code
-identifiers stay `guide*` (stable API); the name is a copy-level fact. No
-spoken line says her name yet — when one is written, mind TTS pronunciation
-(intended: "KLY-oh").
+identifiers stay `guide*` (stable API); the name is a copy-level fact. Her
+welcome line (2026-08-10, the first spoken use of the name) is gated on the
+founder hearing the rendered pronunciation — TTS may say "KLEE-oh" (the UK
+default, à la Renault) or "KLY-oh" (the classical muse); the founder decides
+from the clip, and a phonetic respelling in the synth text fixes it if wrong.
 
 ---
 
