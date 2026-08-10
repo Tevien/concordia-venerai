@@ -5,6 +5,22 @@ Newest first. One entry per decision; keep it short.
 
 ---
 
+## 2026-08-10 - The interviewer is named Clio
+
+**Status:** accepted (founder naming)
+
+**Context:** the synthetic interviewer needed a name — "she" was never
+introduced (UX gate finding), and "our interviewer" is generic.
+
+**Decision:** she is **Clio**, after the Greek Muse of history — the keeper of
+what deserves remembering, which is literally her job. User-facing copy
+introduces her by name once (the begin button), then "she" is earned. Code
+identifiers stay `guide*` (stable API); the name is a copy-level fact. No
+spoken line says her name yet — when one is written, mind TTS pronunciation
+(intended: "KLY-oh").
+
+---
+
 ## 2026-08-10 - Launch economics v2: subscription-only pricing, cloud-GPU launch
 
 **Status:** accepted (founder direction; supersedes both 2026-07-31 decisions below)
