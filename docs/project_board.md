@@ -22,7 +22,7 @@ Last full update: **2026-08-02** (evening).
 | Sitting refinement with Sean as test subject | high | validate | 🟢 device test 2026-08-09: clip interview + video quality ACCEPTED for this version → remodel round issued | - |
 | Nan's sitting | high | validate | ⚪ deliberately postponed (2026-07-28) | refinement above (R2 consent clip: DONE 2026-08-09, in bundle) |
 | Apple Developer enrollment (DUNS 234989532 ready) | high | ship | 🟡 submitted, in review (2026-08-09) | Apple verification |
-| Google Play org account | med | ship | 🟡 registered + $25 paid (2026-08-09), identity verification underway | Google verification |
+| Google Play org account | med | ship | 🟢 FULLY VERIFIED as Venerai Ltd organisation (2026-08-10) | - |
 | EAS account + project link (slug `venerai`) | high | ship | 🟢 done 2026-07-25 | - |
 | TestFlight build + both phones as internal testers | high | ship | ⚪ ready to fire | Apple enrollment + HTTPS backend (R2 consent clip: done) |
 | AWS Activate credits | high | fund | 🟢 GRANTED $1,000 (2026-07-31) | - |
@@ -42,7 +42,7 @@ Last full update: **2026-08-02** (evening).
 | Voice pack for founder twin (8 curated refs, rotation live) | med | build | 🟢 published — likeness A/B by founder pending | - |
 | Full-twin training (voice pack live; persona/face LoRA trainers) | med | build | 🔵 voice pack live; LoRA runs need CUDA time | GPU box availability |
 | Engineering hardening backlog (Alembic, media-leak on delete, resumable uploads, retrieval eval) | med | build | ⚪ backlog | - |
-| Android build (Beam Pro as test device) | med | ship | ⚪ ready once Play verification clears; Expo Go testable today | Play org verification |
+| Android build (Beam Pro as test device) | med | ship | ⚪ UNBLOCKED (Play org verified) — ready for closed-test track + Beam Pro APK | - |
 
 ## In progress
 
