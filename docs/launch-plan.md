@@ -370,6 +370,65 @@ scarcity framing ("we onboard a handful at a time, personally") is true. The
 press push continues post-launch with the launch itself as the news hook. An
 empty queue delays wave 2, not launch day.
 
+### 5a. Announcement calendar — the loud-vs-quiet position (founder question, 2026-08-10)
+
+**Position: sequenced hybrid — loud about the story, quiet about the date until
+both store approvals are held. No ticking countdown anywhere, ever.**
+
+Three structural facts decide this:
+
+1. **Loudness cannot break capacity, because the funnel ends at a sealed queue,
+   not a buy button.** The site only ever offers "join the queue"; payment exists
+   solely behind an invitation. A viral day produces queue signups (the scarcest
+   resource we have — currently ~zero), never a render spike or a support flood.
+   So the classic argument for staying quiet ("we can't handle demand") does not
+   apply — waves stay capacity-bounded no matter how loud the top of funnel gets.
+2. **A public DATE is the only dangerous loudness.** It sits on two dependencies
+   the founder doesn't control (Apple org approval, App Review) and one that is
+   deliberately allowed to fail (nan's sitting is a validation gate — it is
+   *supposed* to be able to send us back a week). A date announced before those
+   resolve is an aspirational claim — banned by brand law. A ticking clock is
+   also tonally wrong for a grief product: countdowns say "sale ends soon"; this
+   brand says "we onboard a handful of families at a time, personally." The
+   scarcity is real and quiet — it never needs a timer.
+3. **The pure-quiet route ("unofficial testers first, advertise after") fails two
+   laws.** As usually meant it implies free early access — banned vocabulary and
+   banned mechanics. And it leaves the queue empty on launch day: wave 2 has
+   nobody to invite, and press runs cold weeks after the news moment. The plan
+   already contains the honest version of "unofficial testers": W0 internal
+   family (not customers), the TestFlight/closed-test soak, and then **founding
+   families who pay from signup with money-back protection** — which is exactly
+   what makes their evidence credible. "25 families pay for this" is a better
+   sentence than "50 people used it free" will ever be.
+
+**The calendar (mapped to §2 milestones):**
+
+| Phase | Window | What gets said, where |
+|---|---|---|
+| **Build-in-public, date-vague** | now → both approvals held | LinkedIn 1×/week (founder voice); site says "Founding access opens **October 2026** — invitations go out in small waves from the priority list." Month, never a date, never a clock. Queue email #1 (Sep 15–30) same framing. |
+| **Nan's sitting** | Sep 1–14 | If it goes well AND her consent-to-share is on record: ONE restrained consented post (a still, a sentence). The full story is **embargoed for launch-week press** — don't spend the best asset on a Tuesday feed. If the sitting sends us back to fix things, nothing was promised publicly and nothing is missed. |
+| **Date goes public** | only when BOTH store approvals are in hand (target ~Oct 10–16, releases held) | Site updates to "Invitations begin the week of 20 October"; LinkedIn announcement post; queue email #2. Still no ticking clock — a stated week + waves framing. |
+| **Launch week** | Oct 20 → | Press embargo lifts; launch-day post; thereafter the cadence continues on real, consented founding-family evidence — this is where "advertise more after an initial period" lives, with paying households as the proof. |
+
+**LinkedIn cadence for a solo founder in this category:** one post per week,
+sustainable and scheduled (batch-write two or three in one sitting). Content
+anchors — all things that are true today: why I'm building this (the
+grandmother story, pre-sitting version); the guide and how she interviews; the
+consent architecture (no recorded consent → no twin, platform-enforced); the
+continuity promise and the HereAfter lesson (respectful — families displaced,
+never gloating); the honest economics (nothing free, here's why); craft posts
+(the two-gate clip rule, the readiness assessment). LinkedIn's job is not to
+fill the queue by itself — it reaches the buyer demographic (adult children,
+30–55) but its main yields are credibility when journalists check the founder,
+warm press intros, and a steady drip of signups. The queue-fill heavy lifting
+stays with press + communities (§5).
+
+**Never posted, anywhere:** a countdown or ticking clock; the word "free" in any
+mechanic; a hard date before approvals are held; anything about nan before her
+recorded consent AND a good sitting; family data or real sitting content without
+consent on record; follower-bait giveaways; aspirational claims ("will have",
+"coming soon" features). Every post passes the claims-true-today test.
+
 ## 6. App Review risk — what reviewers will probe on a grief-tech app, and the evidence pack
 
 Expected scrutiny: sensitive personal data (voice, face, life stories),
