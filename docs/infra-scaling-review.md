@@ -1,14 +1,21 @@
-# Infra scaling review — phase-A architecture
+# Infra scaling review — cloud-GPU launch baseline (rev 2)
 
-**Date:** 2026-08-10 · **Reviewer:** infra-scaling-review agent · **Scope:** first full
+**Date:** 2026-08-10 · **Reviewer:** infra-scaling-review agent · **Scope:** full
 review at 10 / 100 / 1,000 / 10,000 paying twins.
 
-Sources read: `infra/aws/*.tf`, `services/render-worker/worker.py`,
-`services/inference/app/render_jobs.py` + `app/main.py`,
+**Rev 2 supersedes the same-day phase-A review** after the founder decision
+"Launch economics v2" (decisions.md 2026-08-10): **launch compute is AWS GPU —
+serverless per-second from subscriber #1, a dedicated full-time L4 VM at scale;
+pricing is $10/mo subscription only (no $30 weave fee); local GPUs are dev/test
+plus an emergency contingency valve.** The home box's ceilings, previously the
+launch constraint, are retained below only as the contingency valve's rating.
+
+Sources: `infra/aws/*.tf`, `services/render-worker/worker.py`,
+`services/inference/app/{render_jobs,main}.py`,
 `services/common/vener_common/{auth,config}.py`, `services/talking-head/app.py`,
-`docs/DEPLOYMENT.md`, `docs/LOCAL-GPU-TESTING.md`, and this repo's
-`project_board.md` / `decisions.md`. MEASURED numbers come from those; everything
-else is tagged ASSUMED with the estimate stated.
+`docs/DEPLOYMENT.md`, `docs/LOCAL-GPU-TESTING.md`, this repo's
+`project_board.md` / `decisions.md`. MEASURED numbers from those; everything
+else tagged ASSUMED.
 
 ---
 
@@ -16,228 +23,306 @@ else is tagged ASSUMED with the estimate stated.
 
 | Figure | Value | Status |
 |---|---|---|
-| Warm portrait render, 512², 125 frames (25 fps → 5.0 s video) | 264 s ⇒ 0.47 f/s | MEASURED (board, `e52a69a`) |
-| Native 768² render rate | ≈ 0.056 f/s ⇒ 125 f ≈ 37 min | MEASURED (guide-clip batch 2026-08-04; not on the board — record it) |
-| Render length clamp (`frames_for`) | 49–201 frames ⇒ 103–425 s per job at 512² | MEASURED (code, talking-head `app.py`) |
-| Voice synth (Chatterbox) | ~5 s/sentence, ~1.6 s short phrases | MEASURED (LOCAL-GPU-TESTING.md) |
-| Local chat floor (Qwen3-4B, llama.cpp on 3060) | 63+ tok/s | MEASURED (board) |
-| Weave external-AI cost | $0 proven end-to-end (2026-08-02 milestone) | MEASURED |
-| Weave all-in compute | ~$2 | RECORDED (decision 2026-07-31 pricing) |
-| Quota law | 1 portrait moment/twin/day (Redis day bucket, count-upfront, refund-once); 1,000 msgs/mo fair-use | MEASURED (config.py, auth.py, main.py — enforced) |
-| Job TTL | 45 min from enqueue → client sees "failed", refund fires | MEASURED (render_jobs.py) |
-| AWS credits vs starter footprint | $1,000 ≈ 3–6 months ⇒ starter ≈ $250–350/mo incl. NAT ~$37, ALB ~$25, Fargate ~$180, RDS t4g.medium ~$66, ElastiCache ~$25 | RECORDED range; breakdown ASSUMED |
-| Serverless rung at pilot volume | ~$50–75/mo | RECORDED (decision 2026-07-31) |
-| Dedicated L4 | ~$450–650/mo | RECORDED (decision 2026-07-31) |
-| Per-moment wall time on the box | ≈ 5 min (render 4.4 min + S3 transfers + synth wait; worker is deliberately serial, `MaxNumberOfMessages=1`) | DERIVED from measured parts |
-| Daily-quota utilisation | 40–60 % of twins take their moment on a given day | ASSUMED (decision log: "average usage sits well under cap"; pilot must measure) |
-| Evening clustering | ~65 % of a day's moments land in an 18:00–22:00 window | ASSUMED (families gather in evenings; uniform-day averages lie) |
+| Warm render, 512², 125 f (25 fps → 5.0 s video), **RTX 5070 Ti** | 264 s ⇒ 0.47 f/s | MEASURED (board, `e52a69a`) |
+| Render clamp | 49–201 frames ⇒ 103–425 s on the 5070 Ti | MEASURED (talking-head `app.py`) |
+| **L4 slowdown factor vs 5070 Ti** | **2.0× ASSUMED (range 1.8–2.5×)** — L4 is Ada, ~300 GB/s memory bandwidth vs ~900 on the 5070 Ti; video diffusion is bandwidth-bound. All L4 numbers below carry this assumption; **measure it in week one on serverless and re-run this review if it falls outside 1.8–2.5** | ASSUMED |
+| Per-moment on L4-class | render ~530 s (475–660) + synth ~30 s + S3 I/O ⇒ **~9.5 min wall (8.5–11.5)** ⇒ ~6.3 moments/hr | DERIVED |
+| Voice synth (Chatterbox) | ~5 s/sentence, ~1.6 s short | MEASURED |
+| Weave compute, serverless | ~$2–3 all-in (ASR ~5 min L4 + LLM + misc APIs) | RECORDED (Launch economics v2) |
+| Serverless GPU pricing (ASSUMED 2026-08): Modal L4 $0.80/hr, A10G $1.10/hr; RunPod serverless 24 GB flex ~$1.10/hr active | ⇒ **$0.15–0.25/moment** incl. warm-pool/cold-start amortisation | ASSUMED, matches recorded $0.15–0.25 |
+| Dedicated L4 VM (g6.xlarge-class, eu-west-1) | ~$580–660/mo on-demand; **~$350–400/mo 1-yr savings plan** | RECORDED (decision arithmetic) |
+| Core CPU stack | ~$150–250/mo starter (credits ≈ 3–6 months) | RECORDED |
+| Quota law | 1 moment/twin/day, count-upfront, refund-once; 1,000 msgs/mo | MEASURED (enforced in code) |
+| Job TTL | 45 min enqueue→result, then client-visible failure + refund | MEASURED (render_jobs.py) |
+| Daily-quota utilisation | 40–60 % of twins take their moment on a given day (central: 50 %) | ASSUMED — the pilot's single most important measurement |
+| Evening clustering | ~65 % of a day's moments inside 18:00–22:00 | ASSUMED (families gather in evenings; uniform-day averages lie) |
+| Contingency valve (home 5070 Ti) | ~5 min/moment ⇒ 12/hr; evening window ≈ 48 moments | MEASURED-derived (rev 1) |
 
 ---
 
-## 1. Moments/day ceiling on the 5070 Ti (interactive 512 tier)
+## 1. Serverless as PRIMARY: cold starts vs the moment experience
 
-**Service rate:** 1 moment ≈ 5 min ⇒ **12 moments/hour**, 288/day at an impossible
-24/7. Realistic availability (shared box, Windows/WSL, sleep, other projects) is
-10–13 h/day ⇒ **~120–160 moments/day realistic ceiling**. At native 768² the same
-moment takes ~37 min of GPU — that resolution is a pre-rendered/archival tier only,
-never interactive.
+The product promise is async: voice plays first, "the video arrives minutes
+later". What "minutes" means under serverless:
 
-**Demand vs ceiling (ASSUMED 40–60 % utilisation, 65 % in the 4-h evening window;
-evening capacity = 48 moments):**
+- **Warm path:** ~9.5 min render wall on L4-class. That is the floor families
+  experience regardless of architecture.
+- **Cold start, engineered** (weights baked into the image/volume, snapshot or
+  flashboot restore, warmup render on spawn — the board's "synthetic warmup"
+  item is now launch-critical): **+60–180 s** ⇒ p95 moment latency **~11–13 min**.
+  Acceptable against the stated product shape.
+- **Cold start, naive** (image pulls ~15 GB of weights from HF at spin-up):
+  +8–15 min ⇒ p95 approaches 20–25 min and, with one retry, threatens the
+  45-min TTL. **This is the difference between a working launch and a flaky
+  one, and it is pure engineering done before subscriber #1.**
+- Optional: a warm-pooled worker 18:00–22:00 costs ~$3.2/day ≈ **$96/mo**
+  (Modal L4). Only buy it if measured p95 says families notice — at a 9.5-min
+  floor, 2 extra cold-start minutes are likely invisible.
 
-| Twins | Moments/day | Evening-window jobs | Peak arrival vs 12/h service | Verdict |
+**Queueing disappears under serverless**: each moment gets its own worker
+(scale-out per job), so the evening peak becomes a *concurrency* number, not a
+queue. The TTL almost never fires from load — see §5.
+
+## 2. Capacity per scenario (serverless-primary)
+
+| Twins | Moments/day (40–60 % util) | Evening jobs (4 h) | Peak concurrent GPU workers | Pure-serverless GPU $/mo (@ $0.20) | Verdict |
+|---|---|---|---|---|---|
+| 10 | 4–6 | 3–4 | 1–2 | $25–35 | Pure serverless. Trivial. |
+| 100 | 40–60 | 26–39 | 3–5 | $240–360 | Pure serverless works; the L4 decision point is near (§3) |
+| 1,000 | 400–600 | 260–390 | 15–25 | $2,400–3,600 | Hybrid: ~5 SP L4s + serverless spill ≈ $3.1k/mo — roughly cost-neutral vs pure serverless, better latency; provider quota must be raised either way |
+| 10,000 | 4,000–6,000 | 2,600–3,900 | **150–250** | fleet: ~30 SP L4s + ~$9k spill ≈ $25k/mo | Fleet + spill. **Provider GPU-concurrency quota is the new ceiling** — default serverless quotas are 10–100 workers (ASSUMED); raises and a second provider are prerequisites, not options |
+
+The binding constraint has moved: from "one home GPU's evening" to
+(a) cold-start engineering, (b) provider concurrency quotas, (c) unit cost.
+
+## 3. The crossover: serverless → dedicated L4 VM
+
+L4 hybrid cost = L4 + the serverless spill it still needs at peak (a single VM
+serializes at ~6.3/hr; the evening always overflows it — spill is a permanent
+feature, not a failure).
+
+**Crossover arithmetic** (serverless @ $0.20/moment central):
+
+- vs **on-demand L4** ($580–660/mo): 2,900–3,300 moments/mo ≈ **97–110/day**
+  ≈ 195–220 subs at 50 % util.
+- vs **1-yr savings-plan L4** ($350–400/mo) **+ spill (~$30–80/mo at that
+  scale)**: ~1,900–2,400 moments/mo ≈ **65–80 moments/day ≈ 130–160 subs at
+  50 % utilisation** — my central answer.
+- The founder's "~100 subs" holds only at the aggressive corner: savings plan
+  AND (utilisation ≥ 60 % OR serverless at the $0.25 top of range). Not wrong
+  — slightly early. There is also a soft reason to adopt near 100: resident
+  models delete cold-start latency for the majority of moments.
+
+**Recommendation:** trigger on the observable, not the sub count — **adopt the
+SP L4 when serverless GPU spend exceeds ~$400/mo for 2 consecutive months**
+(that is the ~65–80 moments/day line). Expect that between 100 and 160 subs.
+
+## 4. Can one L4 actually carry 100–150 subs? (the founder's implicit claim)
+
+At the ASSUMED 2.0× slowdown: one L4 does **~150 moments/day** flat-out 24/7
+(121–168 across the 1.8–2.5× range), and weaves are noise on top (5–10/week at
+that scale ≈ minutes of ASR, run off-peak).
+
+- **Volume: YES.** 100–150 subs demand 50–90 moments/day — comfortably under
+  ~150/day capacity.
+- **Evening peak: NO, not alone.** 100 subs ⇒ ~32 jobs in the 4-h window =
+  ~8.1/hr arrivals vs ~6.3/hr service ⇒ backlog ~7 jobs by 22:00 ⇒ late-window
+  waits ~70 min ⇒ **TTL breaches on ordinary evenings**. At 150 subs it is
+  worse (≈12/hr vs 6.3/hr).
+- **With serverless spill: YES, comfortably.** Spill absorbs ~5–10 moments per
+  evening at 100 subs (~$30–60/mo), ~20–30 at 150 subs (~$120–180/mo). The
+  L4+spill pair carries to **~150–200 subs**; buy L4 #2 when spill spend itself
+  sustains > ~$400/mo. Beyond that, N×L4 baseline + spill for the peak,
+  ~+1 L4 per ~100–130 subs (at 50 % util).
+
+**Plain statement: "one L4 at ~100 subs" is true for volume and false for the
+evening peak — the correct unit of adoption is "L4 + serverless spill", and it
+works. Never deploy the VM and turn the serverless path off.**
+
+## 5. The 45-min TTL and refund logic under serverless
+
+- Warm/engineered-cold worst path: cold 3 min + render 11.5 min ≈ 15 min ≪ 45.
+  With per-job workers there is no queue wait, so **under normal operation the
+  TTL never fires** — it becomes what it should be: an outage detector
+  (provider down, quota exhausted, pathological cold start).
+- The `job_status` refund-once logic (Redis marker, S3-object-existence
+  protocol) carries over to serverless workers **unchanged** — the worker
+  contract is "write mp4 or .failed marker to S3"; nothing in it assumes the
+  home box. Keep SQS as the dispatch bus (provider autoscalers can consume it,
+  and it keeps the contingency valve plug-compatible).
+- Keep TTL at 45 min. Add the metric that makes it diagnosable:
+  **enqueue→worker-start p95** (cold-start health) alongside enqueue→ready.
+- **Contingency-valve bug stays open:** `worker.py` never checks
+  `job["enqueued_at"]` against the TTL and the queue retains messages 4 days —
+  a valve activated after an outage would burn GPU on already-refunded jobs.
+  Five-line fix; do it even though the box is no longer the launch path.
+
+## 6. Onboarding (weave) throughput — no longer an infrastructure ceiling
+
+Serverless parallelism removes the GPU cap on weaves: each is ~5 min of L4 ASR
++ LLM calls, ~$2–3 all-in (recorded), and any number can run concurrently
+within provider quota. **The wave-size constraint moves from GPU to founder
+support bandwidth and cash exposure**: a 100-invitation wave costs ~$200–300
+of weave compute against ~$1,000 collected at signup (billing is
+month-in-advance) — cash-positive by design; worst-case churn exposure is the
+recorded ~$2–3 per month-one canceller.
+
+**Clean number for the launch specialist: waves are no longer GPU-capped;
+size them to support capacity — ASSUMED ≤100 invitations/week for a solo
+founder — and to the cold-start/quota engineering being proven (§1, §8).**
+
+## 7. Cost per subscriber and margin — $10/mo only, commission sensitivity
+
+Costs per active sub/mo: GPU moments at 50 % util ≈ $3.00 serverless
+($2.25–3.75), similar under L4-hybrid at its adoption scale; core-stack share
+falls with scale; weave ~$2–3 once, in month one.
+
+| Scale | Cost/sub/mo (GPU + infra share) | Margin @ 0 % (net $10) | @ 15 % ($8.50) | @ 30 % ($7.00) |
 |---|---|---|---|---|
-| 10 | 4–6 | 3–4 | trivial | waits < 10 min. Fine. |
-| 100 | 40–60 | 26–39 | 55–80 % of window capacity | Works on average; Poisson bursts push waits past 40 min on the worst evenings at the top of the range. **The edge.** |
-| 1,000 | 400–600 | 260–390 | λ ≈ 65–98/h vs μ = 12/h | Queue explodes within ~10 min of the evening; even a perfectly uniform day (impossible) exceeds the 288/day theoretical max. **Phase-A is arithmetically dead here.** |
-| 10,000 | 4,000–6,000 | 2,600–3,900 | — | Fleet territory (see §4). |
+| 10 | $17–28 (fixed $150–250 dominates) | negative — credits absorb; expected | negative | negative |
+| 100 | $4.50–5.50 | **+$4.50–5.50** | +$3.00–4.00 | +$1.50–2.50 |
+| 1,000 | $3.90–4.40 | +$5.60–6.10 | +$4.10–4.60 | +$2.60–3.10 |
+| 10,000 | $2.90–3.40 | +$6.60–7.10 | +$5.10–5.60 | +$3.60–4.10 |
 
-**Plain statement: the home box carries ~110–130 paying twins before evenings start
-failing jobs. 1,000 twins breaks phase-A outright — not by margin, by 8–50×.**
-The serverless rung must be live well before ~150 twins.
+- **Max-usage subscriber** (all 30 moments): GPU $4.50–7.50 ⇒ at 30 %
+  commission the margin is **−$0.50 to +$2.50 — an IAP-billed power user can be
+  margin-negative.** The decision log already names web checkout (~3 %) vs
+  store billing as first-order packaging; this table is the arithmetic behind
+  it. Hand to launch-specialist + compliance-review (IAP rules decide what's
+  permitted per jurisdiction).
+- **Month one** per new sub at 30 % commission: $7.00 − weave $2.50 − moments
+  ~$3 − infra ≈ break-even; positive from month two. Fine — but it means
+  month-one churn is the entire acquisition cost, as the decision records.
+- **Cash break-even** (covering the $150–250 core stack, post-credits):
+  ~**22–38 subs** at 0 % commission, ~28–47 at 15 %, ~38–63 at 30 %.
+- Honesty flag retained from rev 1: at measured render speeds, 10k-scale GPU
+  is ~$2.5–3/sub = 25–30 % of gross — the deck's "3–6 % at scale" needs the
+  cheap-render path (LivePortrait-class reenactment / distillation) or does
+  not survive arithmetic.
 
-## 2. Queue depth × render time vs the 45-min TTL
-
-Service time 5 min, TTL 45 min ⇒ a job enqueued behind **≥ 8 waiting jobs** is
-already condemned (wait > 40 min + own render > TTL). Sustained arrivals above
-**12/hour for ~45 minutes** guarantee client-visible failures. That threshold is
-crossed on ordinary evenings somewhere around **~60 moments/day demanded
-(~110–130 twins at assumed utilisation)**.
-
-Independent failure mode: **any worker outage ≥ 45 min fails 100 % of jobs queued
-in that window** (refund-once fires; families see "the studio may be offline").
-The box is currently loaned out and the RAM RMA will take it down again — this is
-today's reality, not a tail risk.
-
-**Bug-grade finding (cheap fix):** `worker.py` never compares `job["enqueued_at"]`
-to the 45-min TTL, and the render queue retains messages for 4 days
-(`message_retention_seconds = 345600`). After any outage the returning worker
-burns GPU rendering jobs the client was already told failed (and refunded), at
-~5 min each, ahead of live jobs. One `if` statement fixes it.
-
-Also note: the worker deletes messages on success *and* failure (by design, to
-avoid re-burning GPU), so the renders DLQ only ever catches crash redeliveries —
-don't expect job-failure forensics there; the `.failed` S3 markers are the record.
-
-## 3. Weave (onboarding) throughput ceiling — for the wave plan
-
-Weave GPU work runs on the **3060** (local Whisper ASR + chat chain when NIM is
-cold) plus CPU stages in cloud. Per weave, fully local: ASR of a ~45-min sitting
-at ASSUMED 4–6× realtime ⇒ 8–12 min, LLM extraction/persona at 63 tok/s ⇒
-15–25 min ⇒ **25–40 min of 3060 time per weave** (NIM warm: 10–15 min). At ~10 h/day
-box availability ⇒ ~20 weaves/day.
-
-**Clean numbers for the launch specialist:**
-- **Hard ceiling: ~140 weaves/week** (NIM warm), **~100/week** fully local.
-- **Recommended invitation-wave size: ≤ 50 invitations/week.** Even 100 %
-  same-week sittings clustered on a weekend (30 of 50 in 2 days = 15/day) stays
-  under the worst-case fully-local ceiling with headroom for daily moments on
-  the same card. Waves above 50/week require the serverless ASR spillover to be
-  live first.
-- Sitting *uploads* don't touch the box (phone → ALB → S3), but ASR audio
-  transits home broadband both ways — see SPOF-2.
-
-## 4. The serverless per-second GPU rung — priced
-
-Providers (ASSUMED current pricing, 2026-08; verify at signup):
-- **Modal**: L4 24 GB ≈ **$0.80/hr** ($0.000222/s), A10G ≈ $1.10/hr; per-second
-  billing, warm-pool option.
-- **RunPod serverless** (flex workers, 24 GB class L4/A5000): ≈ **$1.10/hr active**
-  (~$0.00031/s), cheaper idle-priced warm workers available.
-
-**Per moment:** an L4 is ASSUMED 1.3–1.6× slower than the 5070 Ti ⇒ 450–530 s
-active per moment ⇒ **$0.10–0.16 active**, realistically **$0.15–0.25/moment**
-with warm-pool amortisation (the persistent-model server matters here: the ~15 GB
-cold load must be paid by a warm pool, not per job).
-
-**Per weave:** ASR ~5 min L4 + LLM extraction ⇒ **$0.20–0.50 GPU**; all-in weave
-stays ≈ $2 (recorded) ⇒ the $30 fee keeps its ~15× margin. Not a concern.
-
-**Margin impact on $10/mo:**
-
-| Subscriber behaviour | Serverless GPU/mo | Margin before CPU-infra share |
-|---|---|---|
-| Max usage (30 moments) | $4.50–7.50 (matches recorded $6–7.5) | **$2.50–5.50 — thin** |
-| Average (ASSUMED 50 %) | $2.25–3.75 | $6.25–7.75 — healthy |
-
-The rung is affordable *because* of the 1/day quota and sub-cap averages; a
-"power-user" cohort at max usage is a margin problem the pilot must measure.
-**Trigger to leave the rung:** sustained serverless spend > $450/mo (dedicated-L4
-parity, recorded) ≈ **~2,000–2,500 moments/mo**.
-
-**Honesty flag on the deck's "3–6 % COGS at scale":** at measured render speeds,
-10,000 twins ⇒ 4,000–6,000 moments/day with an evening peak needing ~30 dedicated
-L4s (~$16.5k/mo) + ~$9k/mo serverless burst ⇒ **~$2.50–3/twin/mo GPU = 25–30 % of
-revenue**, not 3–6 %. The 3–6 % claim requires the cheaper render path
-(LivePortrait-class reenactment / step-distilled or mouth-only second stage — the
-quality-envelope roadmap's own rungs) or heavy peak-smoothing. Say so in any
-investor conversation before they do the arithmetic.
-
-## 5. Cost per subscriber per tier
-
-| Twins | Cloud CPU stack (ASSUMED) | GPU | Cost/sub/mo | Margin/sub on $10 |
-|---|---|---|---|---|
-| 10 | starter $250–350 (credits absorb) | home box (~£20–40/mo electricity, ASSUMED) | $27–39 | negative; credits + electricity only. Expected. |
-| 100 | starter $250–350 | home box + first serverless spillover $50–75 | $3.00–4.25 | **$5.75–7.00** — the sweet spot, but reliability rides on one house |
-| 1,000 | growth tier $900–1,300 (ASSUMED: r6g.large DB multi-AZ, Redis replica, more tasks) | serverless/early-dedicated $2,600–3,800 | $3.50–5.10 | $4.90–6.50 — works, **but only off phase-A** |
-| 10,000 | enterprise $3–5k | ~30×L4 + burst ≈ $25k | $2.80–3.00 | ~$7 — needs the cheap-render path to reach deck COGS |
-
-Break-even on cash (credits exhausted, starter stack, home GPU): **~30–35
-subscribers** cover the $250–350 fixed cloud. Margin crosses genuinely positive
-territory at ~40 twins and stays positive through every tier *if* the GPU rung
-climbs on the triggers below.
-
-## 6. SPOF register (ranked by blast radius)
+## 8. SPOF register (re-ranked for the cloud-GPU launch)
 
 | # | SPOF | Blast radius | Evidence | Cheapest mitigation |
 |---|---|---|---|---|
-| 1 | **Home GPU box** (5070 Ti + 3060, WSL under Windows) | ALL portrait moments, local ASR (weaves slow to HF-paid), chat floor, cloned voice. Outage ≥ 45 min = every queued moment fails. | Bad-RAM history (stick-B RMA pending — **full kit ships = planned downtime**); failing-NVMe docker deaths; CUDA contexts die on hibernate; **currently loaned out** (capacity today = 0); shared with other projects | Serverless spillover wired NOW (same container on Modal/RunPod, fired by queue-age alarm) — turns box death into a cost blip. Then: UPS, Ubuntu boot over WSL, `run.sh` under systemd/Task-Scheduler auto-start |
-| 2 | **Home broadband** | Same as #1 while ISP is down; also per-job transfer tax — worker re-downloads portrait+voice-ref (and future face LoRA, 100–300 MB, **uncached**) every job | worker.py has no local artifact cache; uplink ASSUMED 15–20 Mbps residential | Local content-addressed cache keyed on S3 URI (~20 lines); 4G-dongle failover ≈ £15/mo |
-| 3 | **NIM free tier** (primary chat) | Chat latency degrades to the 63 tok/s floor (contending with ASR+voice on the 3060), then paid HF. Free tiers are revocable without notice. | Chain NIM→local→HF proven (board: floor carried a whole weave) — degradation, not outage | Budget a paid second cloud LLM (small-model API, ~$10–40/mo at 1k twins, ASSUMED) before waves start |
-| 4 | **Single founder** | Everything: ops, RMA logistics, consent gates, support, and the "archive outlives us" promise itself | solo; no remote push of the monorepo (explicit choice) — **the code's only full copy is one Mac + one house** | Push to a private remote (decision to revisit); document worker runbook; wind-down data-escrow note in terms (see §7) |
-| 5 | **Raspberry Pi** (marketing site + sealed waitlist) | Acquisition funnel; an invitation wave landing on a dead site | Behind Cloudflare, but origin is one Pi on home power/net | Static site → Cloudflare Pages ($0); Pi keeps the proxy role only until then |
-| 6 | **Redis fail-open quotas** | ElastiCache down ⇒ quota checks fail OPEN (auth.py, deliberate) ⇒ unmetered render enqueues exactly when things are already broken; starter tier runs **0 replicas** | auth.py `quota_exceeded` catches and allows | Accept at pilot (documented trade-off); belt-and-braces: worker-side per-twin daily cap (it has `twin_id` + `enqueued_at` in the message) |
-| 7 | **Email deliverability** (OTP-only login at cloud launch) | Nobody can log in; SES reputation is an availability dependency the decision log already names | decision 2026-08-02 | SES + a fallback SMTP (SMTP2GO already proven for /admin) |
-| 8 | **Credit cliff** | $1,000 ≈ 3–6 months; after that $250–350/mo cash | recorded | Break-even math above: ~30–35 subs; time waves accordingly |
+| 1 | **Single founder** | Everything: ops, billing, consent gates, support, the "archive outlives us" promise | solo; bus factor 1 | Runbooks (exist), scheduled-export automation, wind-down escrow note in terms |
+| 2 | **AWS eu-west-1 single region** | The entire product — API, DB, S3, SQS, and now the GPU dispatch — until restore | all of `infra/aws` is single-region; backups same-account | Cross-account + cross-region backup replication (the §9 durability pack); a written region-recovery runbook. Multi-region active is NOT warranted yet |
+| 3 | **Serverless GPU provider** | All portrait moments and weave ASR while it's down or quota-throttled; free/low quotas are revocable and raise-gated | new primary compute; single account today | **Same container live on TWO providers (Modal + RunPod), env-var switch, drilled monthly**; quota raises requested before each wave |
+| 4 | **Un-pushed monorepo** | Irrecoverable loss of the codebase that now IS the product and its infra — one Mac, one house | explicit no-remote choice (2026-07-13) — made under a different risk profile | Push to a private remote today; cost: zero |
+| 5 | **NIM free tier** (primary chat) | Chat degrades to fallbacks; the home-box local floor is no longer a production tier | chain NIM→local→HF; local leg now dev/test | Budget a paid LLM API second leg (~$10–40/mo at 1k subs, ASSUMED) |
+| 6 | **Redis fail-open quotas** | ElastiCache down ⇒ unmetered enqueues ⇒ **unbounded serverless spend** (this got WORSE: the flood now costs real dollars, not home electricity) | auth.py deliberate fail-open; starter = 0 replicas | Provider-side concurrency cap + daily spend alarm as the backstop |
+| 7 | **Email deliverability** (OTP-only login) | Nobody logs in | decision 2026-08-02 | SES + proven SMTP2GO fallback |
+| 8 | **Raspberry Pi** (site + waitlist) | Acquisition funnel during waves | one Pi behind Cloudflare | Static site → Cloudflare Pages ($0) |
+| 9 | **Credit cliff** | $1,000 ≈ 3–6 mo of core stack; GPU now bills in real dollars from day 1 | recorded | Break-even at ~22–63 subs (§7); time waves to it |
 
-## 7. Data durability at scale — the "archive outlives us" promise, costed
+**Contingency section (demoted from launch path):** the home box — bad-RAM RMA
+pending (full kit ships = downtime), WSL/hibernate kills CUDA, failing-NVMe
+history, shared/loaned (capacity today: zero), home broadband. As a valve its
+rating is **12 moments/hr, ~48 per evening window** — enough to cover ~100
+subs' evening demand in a provider outage, IF it is kept drilled (§10) and the
+worker TTL bug is fixed. A valve that is never exercised is fiction.
 
-**GB/twin (ASSUMED from artifact kinds):** sitting answer recordings (audio-first,
-17–45 answers) ~0.05–0.2 GB; video sittings up to the 500 MB/file cap and the
-planned 30–60 s enrollment video push a video-rich twin to 2–4 GB; portrait
-photos + 8-ref voice pack ~0.05 GB; future face LoRA 0.1–0.3 GB; **retained daily
-moments ~2–4 MB × 365 ≈ 0.7–1.5 GB/twin/YEAR** (nothing expires them). Blended:
-**~1–3 GB/twin in year one, growing ~1 GB/yr**.
+## 9. Data durability — unchanged in substance, promise-critical
 
-| Twins | Media store | S3 standard (ASSUMED $0.024/GB-mo) | With lifecycle (IA/Glacier for moments+masters) |
-|---|---|---|---|
-| 100 | 0.1–0.3 TB | $3–7/mo | ~$1–3/mo |
-| 1,000 | 1–3 TB | $25–70/mo | ~$8–25/mo |
-| 10,000 | 10–30 TB | $250–700/mo | ~$80–250/mo |
+(Unchanged from rev 1; the launch-compute change does not touch it.)
+~1–3 GB/twin year one (+~1 GB/yr retained moments); S3 versioned but
+same-account, same-region, **no lifecycle, no replication** — the "archive
+outlives us" promise is policy, not architecture. Cross-account Glacier Deep
+Archive replication ≈ **$1/TB-mo** ($0.30/mo at pilot). **GDPR-erasure gap:
+versioned buckets keep noncurrent versions readable after plain deletes —
+/admin ERASE and the delete-order backlog item must delete versions.** RDS
+30-day PITR + deletion protection is good.
 
-**Backup posture today (from `data.tf`):** RDS 30-day PITR + deletion protection +
-final snapshot — good. S3: KMS, versioned, public-blocked — but **same account,
-same region, no lifecycle, no replication**. A compromised AWS root or an
-eu-west-1 event takes primaries *and* their versions together. The promise is
-currently a policy, not an architecture.
+## 10. Trigger table — watch on /admin (+ the two new numbers)
 
-**What the promise costs:** cross-account replication to a locked backup account
-with Glacier Deep Archive (ASSUMED $0.00099/GB-mo) ≈ **$1/TB-mo** — $0.30/mo at
-pilot, ~$30/mo at 10k twins. Plus the export tooling the board already lists
-(open-format per-twin export; wind-down window in terms). Buy it now; it is the
-cheapest promise the company will ever keep.
-
-**GDPR erasure flag:** on a **versioned** bucket, plain deletes leave noncurrent
-versions readable. The /admin ERASE path and the known delete-order media-leak
-backlog item must delete *versions* (or a noncurrent-version-expiry lifecycle
-rule must back them up). Right-to-erasure is a consent promise — this is a
-correctness gap, not an optimisation. Same for the future backup account:
-erasure must propagate.
-
-## 8. Trigger table — watch these on /admin
-
-/admin today shows services/homes, users, twins, storage GB and live logs, but
-**none of the queue metrics below — adding three numbers (render-queue depth,
-oldest-message age, TTL-failures today) is a prerequisite for this table.**
+/admin needs: moments/day, **GPU $/day**, enqueue→start p95 (cold start),
+enqueue→ready p95, TTL failures/day, provider quota headroom. Without these
+the table below is unwatchable.
 
 | Climb | Observable metric | Threshold |
 |---|---|---|
-| Home box → serverless spillover **(wire now, fire automatically)** | Render-queue oldest-message age | > 15 min while worker healthy, any day |
-| | TTL-failed jobs (refund-once markers/day) | ≥ 3 in one evening, twice in 7 days |
-| | p95 moment wait (enqueue→object) | > 15 min for 3 consecutive days |
-| | Paying twins | > 120, full stop — the arithmetic ceiling |
-| | Box dark 18:00–22:00 | > once/week |
-| Serverless → dedicated GPU | Serverless GPU spend | > $450/mo sustained 2 months (L4 parity) ≈ >2,000–2,500 moments/mo |
-| | Serverless p95 cold-start | > 90 s degrading the "minutes later" promise |
-| Weave capacity → serverless ASR | Weave backlog (enqueue→twin ready) | > 24 h, or any planned wave > 50 invitations/week |
-| starter → growth tier (Terraform `scale_tier`) | ECS service CPU / DB connections | > 70 % sustained, or > ~500 twins |
-| Pi → Cloudflare Pages | First origin outage during a wave, or waitlist wave planned | do it before the next wave regardless — it's free |
-| Storage lifecycle + backup account | Media GB on /admin | > 500 GB for lifecycle; replication **now** (promise-critical, ~$1/TB-mo) |
+| Launch gate (before subscriber #1) | cold-start p95 on the baked serverless image | < 3 min proven, warmup render on spawn verified |
+| Serverless → +1 SP L4 (keep spill forever) | serverless GPU spend | **> ~$400/mo for 2 consecutive months** (≈ 65–80 moments/day ≈ 130–160 subs @ 50 % util); adopt as early as ~100 subs only if measured util ≥ 60 % or cold-start p95 > 3 min persists |
+| +L4 #N | spill spend | > ~$400/mo sustained, per additional L4 (~every 100–130 subs) |
+| Provider quota raise / activate 2nd provider | peak concurrent workers | > 50 % of granted quota |
+| Contingency valve health | monthly drill: 1 job end-to-end through the home box | any failure ⇒ fix or formally retire the valve claim |
+| Spend backstop | GPU $/day | > 2× trailing-week average ⇒ page founder (quota fail-open guard) |
+| starter → growth tier | ECS CPU / DB connections | > 70 % sustained, or > ~500 subs |
+| Pi → Cloudflare Pages | before the next wave | free — just do it |
+| Durability | media GB | lifecycle at 500 GB; cross-account replication NOW |
 
-## 9. Top-5 actions (cheapest meaningful first)
+## 11. Top-5 actions under the new baseline (cheapest meaningful first)
 
-1. **Worker TTL check** (~5 lines): skip any job where `now − enqueued_at > 45 min`
-   — stops post-outage GPU burn on already-refunded jobs. Add a content-addressed
-   local cache for portrait/voice-ref/LoRA while in the file.
-2. **Three queue metrics on /admin** (SQS `GetQueueAttributes` + refund-marker
-   count): depth, oldest-age, TTL-failures — the entire trigger table is
-   unwatchable without them.
-3. **Wire the serverless spillover before the first invitation wave** (Modal or
-   RunPod, same talking-head container, warm-pool, fired by the queue-age alarm):
-   ~$50–75/mo at pilot (recorded), and it converts SPOF-1 from product outage to
-   cost line. This is the single change that lets 100 twins be safe and 1,000 be
-   possible.
-4. **Durability pack**: S3 lifecycle (moments + 768 masters → IA/Glacier),
-   cross-account Glacier Deep Archive replication (~$1/TB-mo), version-aware
-   erasure in /admin ERASE, and push the monorepo to a private remote. This is
-   the "archive outlives us" promise made structural.
-5. **Move the marketing site to Cloudflare Pages** and hold **invitation waves at
-   ≤ 50/week** until (3) is live and the RMA'd RAM is back and soak-tested.
+1. **Push the monorepo to a private remote** (minutes, $0): the un-pushed repo
+   is now the cheapest catastrophic risk on the register.
+2. **Engineer the serverless image properly before subscriber #1**: weights
+   baked into image/volume, snapshot/flashboot, synthetic warmup render on
+   spawn, cold-start p95 measured < 3 min — and **measure the real L4
+   slowdown factor** (this review assumes 2.0×; outside 1.8–2.5× the
+   crossover and capacity numbers must be re-run).
+3. **Two-provider portability from day one** (Modal + RunPod, same container,
+   env-var switch, monthly drill) + provider concurrency-quota raises ahead
+   of each wave.
+4. **Metrics + spend backstop on /admin**: the six numbers in §10 plus a
+   GPU-$/day alarm — quotas fail open, and the flood now costs real money.
+5. **Durability pack + valve hygiene**: S3 lifecycle, cross-account Glacier
+   replication, version-aware erasure; fix the worker.py TTL check (5 lines)
+   and drill the contingency valve monthly.
+
+## 12. Elasticity audit at 10k–100k: what scales by itself vs by hand
+
+The question: at 10k or 100k subscribers, does the stack load-balance, spin up
+compute, and absorb database load *automatically*? Verified against
+`infra/aws/ecs.tf` — the answer is three different answers.
+
+**Load model (ASSUMED):** 10k subs ⇒ ~2–6 rps API average, 10–25 rps evening
+peak, ~300–800 concurrent chat WebSockets; 100k ⇒ 20–60 rps avg, 100–250 rps
+peak, ~3k–8k concurrent WebSockets, ~1–2k DB queries/s at peak.
+
+**A. Scales automatically today (within tier caps):**
+- **ALB**: managed, effectively unlimited at these rates. Yes.
+- **ECS services** (web/builder/inference): target-tracking autoscaling at
+  60 % CPU is wired (`ecs.tf`), Fargate tasks come up in ~60–120 s.
+  **But the caps are the tier**: starter maxes at 2 tasks — saturated long
+  before 10k; enterprise allows 200 svc / 100 worker tasks, which covers even
+  100k's ~10–30-task need with room. **Crossing tiers is a deliberate manual
+  `terraform apply`** (a solo-founder cost guard, not an oversight) — the §10
+  trigger (>70 % CPU sustained) is what fires it.
+- **Builder-worker**: autoscales on SQS queue depth (target 2 queued builds
+  per task, 60 s scale-out). Yes.
+- **SQS, S3**: effectively infinite managed scaling. Non-issues.
+
+**B. Scales automatically only if engineered (GPU):**
+- Serverless scales **per job** — that's its whole appeal — but inside
+  provider concurrency quotas. 10k needs 150–250 peak workers: quota raises +
+  the second provider, already §11 actions. **100k needs ~1,300 L4-equivalents
+  at the evening peak** (32.5k moments in 4 h ÷ 6.3/hr/L4) or ~330 at uniform
+  load — that is no longer "serverless with a quota raise", it is a real GPU
+  fleet operation (capacity reservations, own scheduler, likely the
+  cheap-render path first). GPU spend at 100k ≈ $150–250k/mo against $1M MRR
+  — margins hold, but nothing about it is automatic. 100k is a funded-company
+  problem; what matters now is that nothing in today's design *precludes* it.
+
+**C. Does NOT scale automatically — the database is the weakest link:**
+- **RDS storage** autoscales 50→500 GB (`max_allocated_storage`). 100k twins
+  ≈ 125 GB ASSUMED (500 memories × ~2.5 KB text+vector each) — fits.
+- **RDS compute does not**: single-writer instance, manual class change per
+  tier, **no read replicas anywhere in the Terraform, no RDS Proxy/pgbouncer**.
+  Connection arithmetic: 20 conns/task (pool 5 + overflow 15, config.py) ×
+  200 enterprise tasks = 4,000 potential vs ~5,000 `max_connections` on
+  r6g.2xlarge — config.py itself warns to keep the product under the cap.
+  **Add RDS Proxy (or pgbouncer) + at least one read replica before any
+  large task-count tier** — this is the missing piece, cheap (~$11/mo/proxy
+  + replica instance cost).
+- One structural mercy: every hot query is **twin-scoped** (pgvector search
+  runs over ONE twin's few hundred memories, never a global index), so vector
+  search stays flat-cost at any subscriber count. The DB problem is
+  connections and writer throughput, not ANN.
+- **No Alembic migrations** (schema is create-only — known backlog): at 10k+
+  every schema change becomes a hand-run risk. Promote it from backlog before
+  the growth tier.
+- **ElastiCache** is fixed-size per tier (starter: one t4g.small, zero
+  replicas) — manual climbs; sessions/quotas at 100k need the enterprise
+  r6g.xlarge + replicas.
+- **Single NAT gateway** (explicit cost/HA trade-off in network.tf): one AZ's
+  egress is a SPOF for HF/NIM calls; add the second NAT at growth tier.
+
+**Verdict:** 10k works on today's Terraform with the enterprise tier, GPU
+quota raises, and RDS Proxy added — mostly-automatic, human-gated at the
+tier boundaries, which is correct for a solo founder. **100k does not work on
+today's stack as-is**: it needs read replicas + connection pooling, a second
+NAT, migrations discipline, and a GPU fleet that no serverless marketplace
+hands you — but it violates no architectural decision; it's additive. The
+honest framing: the stack is built to be *scaled deliberately*, not to scale
+by itself — and the trigger table is the deliberation schedule.
 
 ---
 
-*Honest bottom line: phase-A is a correct pilot architecture with a measured
-ceiling of ~110–130 paying twins, and it fails at 1,000 by an order of magnitude —
-which is fine, because the serverless rung is priced, thin-but-positive, and one
-alarm away. The two things that are NOT fine to defer: the spillover path and the
-backup account. Both cost less per month than one family's subscription.*
+*Honest bottom line: the cloud-GPU baseline is sounder than phase-A — cost now
+tracks usage, the evening peak is bought instead of queued, and onboarding is
+uncapped. The arithmetic mostly supports the founder: crossover to a
+savings-plan L4 lands at ~130–160 subs on my numbers (~100 only at the
+aggressive corner), and "one L4 per ~100 subs" is true ONLY as "L4 + permanent
+serverless spill" — a lone VM fails ordinary evenings on TTL. The margin story
+survives every commission row except one: an IAP-billed max-usage subscriber
+at 30 % is roughly margin-zero. Web checkout is not a packaging detail; it is
+the margin.*
