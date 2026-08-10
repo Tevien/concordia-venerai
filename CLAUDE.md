@@ -21,6 +21,8 @@ it as the work teaches you what matters.
 
 - **Brand:** the name is always **VENER.AI** — never bare "VENER". Company:
   VENERAI LTD, England & Wales, no. 17335051. Name from Latin *venerari*.
+  **Spoken form: "Vennerai", one word** — any text sent to a TTS engine
+  substitutes it (helper: `vener_common.hf.speakable`; app: `src/speech.js`).
 - **Claims:** "ISO 27001/17/18-**aligned** controls", never "certified".
   Participation is never "free" — invitations carry a cost contribution.
   Public claims must be true today, not aspirational ("built, not promised").
