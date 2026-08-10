@@ -5,6 +5,29 @@ Newest first. One entry per decision; keep it short.
 
 ---
 
+## 2026-08-10 - Two-gate rule for interviewer clips: script review BEFORE render, transcript audit AFTER
+
+**Status:** accepted (founder rule)
+
+**Context:** clips are generated from fixed text scripts (LLM-drafted question
+bank, static in guide-lines.json) → TTS → render. Two silent word-loss bugs
+(seam-window drop 2026-08-09, output `-to` pad-chop 2026-08-10) were caught
+only by listening; separately, most chapter-question texts had never been
+founder-reviewed before GPU-hours were spent on them.
+
+**Decision:** (1) PRE-RENDER: the founder reviews every line text before a
+batch renders it (`data/interviewer-script-review.md`; batches stay held until
+approval) — the content gate, and it's cheap because text edits cost nothing
+before rendering. (2) POST-RENDER: the batch ends with a whisper transcript
+audit diffing every final clip against its script (PASS/REVIEW at 0.85,
+transcript-report.md) — the integrity gate for TTS/render corruption. Idle
+(non-speech) clips skip both (whisper hallucinates on noise). Runtime
+exception: personalised journal questions are LLM-generated per day and can't
+be pre-reviewed per-line — they are TTS-only (no video render) and carry
+their own grounding validation.
+
+---
+
 ## 2026-08-09 - App remodel: story-first, interviewer-led
 
 **Status:** accepted (founder direction after the device test of the clip-driven sitting)
