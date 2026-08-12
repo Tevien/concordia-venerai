@@ -8,7 +8,7 @@ Product code and technical docs live in the monorepo one level up
 detailed per-service evidence. **This board is the current-status source of
 truth**; update it as work moves.
 
-Last full update: **2026-08-02** (evening).
+Last full update: **2026-08-12**.
 
 ## At a glance
 
@@ -18,7 +18,7 @@ Last full update: **2026-08-02** (evening).
 | Voice cloning service (Chatterbox, containerized) | high | build | 🟢 proven | box currently loaned out |
 | Talking portrait (EchoMimicV3 + persistent-model server) | high | build | 🟢 proven (WSL warm render 264s/125f) | box currently loaned out |
 | Per-twin usage quotas (video allowance, message fair-use) | high | build | 🟢 62 tests green | - |
-| Guide avatar clips (pre-rendered interviewer) + hands-free sitting screen | high | build | 🟢 BATCH DONE + BUNDLED 2026-08-04 (fb3eeba): all 18 lines (essentials+heart+enc) at native 768², frontal candidate 4, in the app — questions play as her video, 7.8 MB total, masters archived `data/guide-clips-app-768` | device retest; 26 deeper lines later |
+| Guide avatar clips (pre-rendered interviewer) + hands-free sitting screen | high | build | 🟢 COMPLETE SET RENDERED 2026-08-12: all 44 questions + welcome + 5 enc + 3 idles at native 768² (interviewer named CLIO, KLY-oh, frontal candidate 4); founder script review applied (us→me, off_limits cut); transcript audit 49/49 PASS after 2 auto-caught fixes; join-quality metrics live (seam SSIM + motion ratio, founder-calibrated) | welcome v3 render + founder report pass → bundle |
 | Sitting refinement with Sean as test subject | high | validate | 🟢 device test 2026-08-09: clip interview + video quality ACCEPTED for this version → remodel round issued | - |
 | Nan's sitting | high | validate | ⚪ deliberately postponed (2026-07-28) | refinement above (R2 consent clip: DONE 2026-08-09, in bundle) |
 | Apple Developer enrollment (DUNS 234989532 ready) | high | ship | 🟡 submitted, in review (2026-08-09) | Apple verification |
@@ -59,8 +59,8 @@ Last full update: **2026-08-02** (evening).
   one-tap unconfirmed weave) — all fixed + 14 ranked notes applied; privacy
   gate APPROVED consent rewording with required changes R1 (voice/audience/
   photos disclosed in the spoken sentence) + R3 (asked_prompt persisted per
-  artifact) — both done, 91+22 tests green; R2 (consent clip re-render) queued
-  on the box. OPEN: founder device pass (stack is live; Expo Go serves the
+  artifact) — both done, 91+22 tests green; R2 consent clip DONE + bundled.
+  2026-08-12: terms & conditions drafting in-app (compliance-review + ui-app-developer). OPEN: founder device pass (stack is live; Expo Go serves the
   branch now), then merge. Flagged founder decision: personalised journal
   questions speak in device TTS, not her voice — guide-voice synth is the
   fast-follow.
@@ -157,6 +157,9 @@ Last full update: **2026-08-02** (evening).
 
 ## Team
 
+Two rosters: this repo's PM team (below) and the monorepo's engineering +
+specialist team (`.claude/agents/` there, updated 2026-08-12).
+
 | Role | Agent | Type | Focus |
 |------|-------|------|-------|
 | Builder | `builder` | producer | implement features and prototypes in the monorepo |
@@ -166,3 +169,16 @@ Last full update: **2026-08-02** (evening).
 | Model scout | `model-scout` | periodic | model quality + commercial-licence vetting (docs/MODELS.md in monorepo) |
 | Funding scout | `funding-scout` | periodic | credits/grants pipeline, application drafting |
 | Competitor scout | `competitor-scout` | periodic | legacy-tech market watch (HereAfter, StoryFile, Re;memory, Eternos…) |
+
+Monorepo team (engineering + specialists):
+
+| Agent | Type | Focus |
+|-------|------|-------|
+| `ai-researcher` | producer | models, prompts, pipeline, RAG, voice, eval, inference cost |
+| `backend-platform-engineer` | producer | FastAPI, DB/migrations, Redis, queues, Docker, Terraform |
+| `ui-app-developer` | producer | web + Expo apps, recording UX, accessibility |
+| `security-engineer` | producer/gate | auth, secrets, GDPR/ISO, abuse cases |
+| `user-experience` (2026-08-09) | gate | will this land with grieving families + elderly subjects; blocks feature-first drift |
+| `infra-scaling-review` (2026-08-10) | reviewer | quantified growth reviews, scaling-rung triggers (docs/infra-scaling-review.md) |
+| `launch-specialist` (2026-08-10) | planner | coordinated store launch, waves, packaging within the never-free law (docs/launch-plan.md) |
+| `compliance-review` (2026-08-10) | reviewer | App Store/Play policy + UK/EU law mapped to in-repo evidence |
