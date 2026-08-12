@@ -26,6 +26,7 @@ Last full update: **2026-08-12**.
 | EAS account + project link (slug `venerai`) | high | ship | 🟢 done 2026-07-25 | - |
 | TestFlight build + both phones as internal testers | high | ship | ⚪ ready to fire | Apple enrollment + HTTPS backend (R2 consent clip: done) |
 | AWS Activate credits | high | fund | 🟢 GRANTED $1,000 (2026-07-31) | - |
+| HF Pro + ZeroGPU (sean@senason.eu) | med | fund | 🟢 active 2026-08-12 — **token is ZeroGPU-ONLY; inference is uncapped PAYG, founder permission required** (quarantined as HF_ZEROGPU_TOKEN; box token file = free downloads only) | - |
 | NVIDIA Inception | med | fund | 🔴 rejected (automatic, no reason) | do not re-apply blind |
 | AWS deploy (Terraform + deploy script, ECS/RDS/S3/SQS + render queue) | high | ship | 🔵 UNBLOCKED — awaiting AWS credentials; now THE LAUNCH COMPUTE (economics v2: serverless GPU from subscriber #1, L4 VM at ~100 subs) | user: aws configure |
 | Async render pull-worker (phase-A GPU: box renders cloud jobs) | med | build | 🟢 built + 68 tests; DEMOTED 2026-08-10 to dev/test + emergency contingency (cloud-GPU launch) | - |
