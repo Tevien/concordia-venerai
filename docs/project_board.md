@@ -74,6 +74,15 @@ Last full update: **2026-08-12**.
 - 🟢 Batch-render tail-trim: DONE — word-timestamp trim + sentence-aware
   segmentation live in render_guide_clips.py phase 1.5 (trimmed 8+ lines in
   the 2026-08-04 app batch).
+- 🔵 **StableAvatar A/B — FOUNDER PRIORITY 2026-08-12**: MIT, Wan-1.3B family,
+  single-pass infinite length (no stitching ever), English audio encoder,
+  Sync-C ~2x the big names (model-scout digest in monorepo docs/MODELS.md).
+  ai-researcher building on the 5070 Ti now: welcome + 60-90s single-pass vs
+  the stitched chain. If it wins it becomes the render engine — retiring seams
+  structurally (frame-carry v4 made joins PASS but conditioning-frame decay
+  blurs later segments; founder verdict). Scout also: LatentSync now Apache
+  (mouth rung back on table, needs detector swap spike); Wan2.2-S2V-14B as
+  future L4 masters tier; Hunyuan family EXCLUDES EU/UK (dead end).
 - ⚪ **Quality envelope — STANDING priority (founder directive 2026-08-04):
   keep pushing render realism on BOTH pipelines.** Renderer-level rungs
   (shared, in effort order): (1) temporal-aware face restoration/SR pass on
