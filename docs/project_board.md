@@ -33,7 +33,7 @@ Last full update: **2026-08-12**.
 | Marketing site vener.ai (product/founder/terms + sealed interest form) | med | live | 🟢 live; priority-access framing 2026-07-30 | - |
 | **Website visual upgrade + real product demos** | **high (URGENT)** | build | 🔵 4 guide clips rendered (B recipe: ag5.5/as1.2/24 steps/loudnorm — the lip-sync A/B winner); site sections LIVE on vener.ai (hero + ask-demo + CTA) | remaining: app screen-recordings S4/S5 |
 | Pitch deck (Activate, measured economics) | med | fund | 🟡 economics STALE (subscription-only pricing + cloud-GPU COGS 2026-08-10) — refresh before next investor use | - |
-| GPU box hardware (bad RAM stick B) | med | ops | 🔴 Corsair RMA (full kit must ship) | user RMA + box downtime |
+| GPU box hardware (bad RAM stick B) | med | ops | 🟢 RESOLVED 2026-08-13: replacement kit installed, 64GB verified CLEAN (36GB pattern test, 3 passes, 0 errors) — checksum-verify rule RETIRED, trusted builds restored | - |
 | Second GPU: RTX 3060 12GB dedicated voice card | med | ops | 🟢 installed 2026-08-01; cohabitation PROVEN (render 100% + synth 72% simultaneous); parking retired | - |
 | Local models service (Whisper + embeddings + Kokoro on 3060) + NIM chat primary | high | build | 🟢 live 2026-08-02 — product survives dead HF account (fallbacks intact) | - |
 | Local chat floor: Qwen3-4B-Instruct-2507 (llama.cpp, 3060, 63+ tok/s) | high | build | 🟢 live — chain NIM→local→HF; the floor carried an ENTIRE weave when NIM was cold | - |

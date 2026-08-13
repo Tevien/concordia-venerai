@@ -8,8 +8,10 @@ project board ("GPU box hardware"); decision + trust rules in decisions.md
 
 - **2026-07-14** — defect isolated to stick B by per-module testing; stick A
   clean. Box runs on stick A alone (32 GB) since.
-- **Pending (user action):** file the RMA with Corsair, ship the kit, re-test
-  both incoming sticks before trusting builds.
+- **RESOLVED 2026-08-13:** replacement kit installed; combined 64GB verified
+  CLEAN — 36GB pattern test (144×256MB chunks), three passes, zero errors
+  (`~/venerai/ramtest-newkit.log`). Checksum-verify rule retired; trusted
+  builds restored. Saga closed.
 
 ## The facts
 
