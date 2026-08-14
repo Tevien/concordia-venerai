@@ -21,10 +21,10 @@ Last full update: **2026-08-12**.
 | Guide avatar clips (pre-rendered interviewer) + hands-free sitting screen | high | build | 🟢 COMPLETE SET RENDERED 2026-08-12: all 44 questions + welcome + 5 enc + 3 idles at native 768² (interviewer named CLIO, KLY-oh, frontal candidate 4); founder script review applied (us→me, off_limits cut); transcript audit 49/49 PASS after 2 auto-caught fixes; join-quality metrics live (seam SSIM + motion ratio, founder-calibrated) | welcome v3 render + founder report pass → bundle |
 | Sitting refinement with Sean as test subject | high | validate | 🟢 device test 2026-08-09: clip interview + video quality ACCEPTED for this version → remodel round issued | - |
 | Nan's sitting | high | validate | ⚪ deliberately postponed (2026-07-28) | refinement above (R2 consent clip: DONE 2026-08-09, in bundle) |
-| Apple Developer enrollment (DUNS 234989532 ready) | high | ship | 🟡 submitted, in review (2026-08-09) | Apple verification |
+| Apple Developer enrollment (DUNS 234989532 ready) | high | ship | 🟢 ORGANISATION ACCOUNT APPROVED 2026-08-14 | - |
 | Google Play org account | med | ship | 🟢 FULLY VERIFIED as Venerai Ltd organisation (2026-08-10) | - |
 | EAS account + project link (slug `venerai`) | high | ship | 🟢 done 2026-07-25 | - |
-| TestFlight build + both phones as internal testers | high | ship | ⚪ ready to fire | Apple enrollment + HTTPS backend (R2 consent clip: done) |
+| TestFlight build + both phones as internal testers | high | ship | ⚪ ready to fire — Apple approved; ONLY remaining gate is the HTTPS backend | user: aws configure → deploy |
 | AWS Activate credits | high | fund | 🟢 GRANTED $1,000 (2026-07-31) | - |
 | HF Pro + ZeroGPU (sean@senason.eu) | med | fund | 🟢 active 2026-08-12 — quota: DAILY 40 min on an RTX Pro 6000 (96GB Blackwell); founder directive: USE IT WHERE WE CAN (14B experiments, masters drip, face gen, SR/restoration spikes). **Token is ZeroGPU-ONLY; inference is uncapped PAYG, founder permission required** (quarantined as HF_ZEROGPU_TOKEN; box token file = free downloads only) | - |
 | NVIDIA Inception | med | fund | 🔴 rejected (automatic, no reason) | do not re-apply blind |
