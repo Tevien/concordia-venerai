@@ -8,7 +8,7 @@ Product code and technical docs live in the monorepo one level up
 detailed per-service evidence. **This board is the current-status source of
 truth**; update it as work moves.
 
-Last full update: **2026-08-12**.
+Last full update: **2026-08-14**.
 
 ## At a glance
 
@@ -18,7 +18,7 @@ Last full update: **2026-08-12**.
 | Voice cloning service (Chatterbox, containerized) | high | build | 🟢 proven | box currently loaned out |
 | Talking portrait (EchoMimicV3 + persistent-model server) | high | build | 🟢 proven (WSL warm render 264s/125f) | box currently loaned out |
 | Per-twin usage quotas (video allowance, message fair-use) | high | build | 🟢 62 tests green | - |
-| Guide avatar clips (pre-rendered interviewer) + hands-free sitting screen | high | build | 🟢 COMPLETE SET RENDERED 2026-08-12: all 44 questions + welcome + 5 enc + 3 idles at native 768² (interviewer named CLIO, KLY-oh, frontal candidate 4); founder script review applied (us→me, off_limits cut); transcript audit 49/49 PASS after 2 auto-caught fixes; join-quality metrics live (seam SSIM + motion ratio, founder-calibrated) | welcome v3 render + founder report pass → bundle |
+| Guide avatar clips (pre-rendered interviewer) + hands-free sitting screen | high | build | 🟢 COMPLETE SET RENDERED 2026-08-12: all 44 questions + welcome + 5 enc + 3 idles at native 768² (interviewer named CLIO, KLY-oh, frontal candidate 4); founder script review applied (us→me, off_limits cut); transcript audit 49/49 PASS after 2 auto-caught fixes; join-quality metrics live (seam SSIM + motion ratio, founder-calibrated) | BUNDLING PAUSED pending render-engine decision (A/B below) — masters safe on box+Mac; consent v4 clip (mortality-clause sentence, frame-carry) RENDERED |
 | Sitting refinement with Sean as test subject | high | validate | 🟢 device test 2026-08-09: clip interview + video quality ACCEPTED for this version → remodel round issued | - |
 | Nan's sitting | high | validate | ⚪ deliberately postponed (2026-07-28) | refinement above (R2 consent clip: DONE 2026-08-09, in bundle) |
 | Apple Developer enrollment (DUNS 234989532 ready) | high | ship | 🟢 ORGANISATION ACCOUNT APPROVED 2026-08-14 | - |
@@ -39,6 +39,7 @@ Last full update: **2026-08-12**.
 | Local chat floor: Qwen3-4B-Instruct-2507 (llama.cpp, 3060, 63+ tok/s) | high | build | 🟢 live — chain NIM→local→HF; the floor carried an ENTIRE weave when NIM was cold | - |
 | **MILESTONE: first twin built by the product's own app, end-to-end** (founder, 17 answers, 49 memories, portrait from in-app photo, $0 external AI) | high | validate | 🟢 2026-08-02 | - |
 | Chat round 2: voice-coming indicator, speak-to-talk (local Whisper), in-chat portrait moments | high | build | 🟢 c79a970 — device test next | - |
+| **Terms & Conditions** | high | ship | 🔵 v1.2-draft: 20 sections, compliance-drafted + privacy-gated (6 required changes applied incl. data-breach liability carve-out); TermsScreen + acceptance-at-signup BUILT; surfacing spec MUST-list verified vs store/UK law | founder read; registered-office address; server-side acceptance persistence (backend, pre-charge) |
 | Admin monitor /admin: services+homes, users, twins, storage, LIVE LOG WINDOW, twin RESET/ERASE (GDPR) buttons; OTP login over REAL EMAIL (SMTP2GO) | med | build | 🟢 live, E2E verified | - |
 | Voice pack for founder twin (8 curated refs, rotation live) | med | build | 🟢 published — likeness A/B by founder pending | - |
 | Full-twin training (voice pack live; persona/face LoRA trainers) | med | build | 🔵 voice pack live; LoRA runs need CUDA time | GPU box availability |
@@ -61,7 +62,9 @@ Last full update: **2026-08-12**.
   gate APPROVED consent rewording with required changes R1 (voice/audience/
   photos disclosed in the spoken sentence) + R3 (asked_prompt persisted per
   artifact) — both done, 91+22 tests green; R2 consent clip DONE + bundled.
-  2026-08-12: terms & conditions drafting in-app (compliance-review + ui-app-developer). OPEN: founder device pass (stack is live; Expo Go serves the
+  2026-08-12: terms v1.2 drafted + privacy-gated; consent COHORT v3 (mortality
+  clause, founder-trimmed) live in bank+tests+terms, clip re-rendered.
+  OPEN: founder device pass (stack is live; Expo Go serves the
   branch now), then merge. Flagged founder decision: personalised journal
   questions speak in device TTS, not her voice — guide-voice synth is the
   fast-follow.
@@ -75,15 +78,18 @@ Last full update: **2026-08-12**.
 - 🟢 Batch-render tail-trim: DONE — word-timestamp trim + sentence-aware
   segmentation live in render_guide_clips.py phase 1.5 (trimmed 8+ lines in
   the 2026-08-04 app batch).
-- 🔵 **StableAvatar A/B — FOUNDER PRIORITY 2026-08-12**: MIT, Wan-1.3B family,
-  single-pass infinite length (no stitching ever), English audio encoder,
-  Sync-C ~2x the big names (model-scout digest in monorepo docs/MODELS.md).
-  ai-researcher building on the 5070 Ti now: welcome + 60-90s single-pass vs
-  the stitched chain. If it wins it becomes the render engine — retiring seams
-  structurally (frame-carry v4 made joins PASS but conditioning-frame decay
-  blurs later segments; founder verdict). Scout also: LatentSync now Apache
-  (mouth rung back on table, needs detector swap spike); Wan2.2-S2V-14B as
-  future L4 masters tier; Hunyuan family EXCLUDES EU/UK (dead end).
+- 🔵 **Render-engine decision (A/B round 2) — FOUNDER PRIORITY**: round-1
+  verdicts (2026-08-13): StableAvatar beats the current engine on quality and
+  did 74s IN ONE PASS (no seams, identity stable, transcript verbatim) — but
+  position changes look unnatural with occasional identity shift; **Wan2.2-
+  S2V-14B is best overall** (BF16 on ZeroGPU Pro 6000, ~28 s/output-s, ~9.4
+  quota-min per welcome — ~4 masters/day inside the free daily 40 min). In
+  flight: (1) 14B quant ladder (FP8/GGUF/lightning) costed against the L4 —
+  decides if 14B is the PRODUCTION async engine or masters-only; (2)
+  StableAvatar stabilization sweep (configs a-e, d/e rendering now on the
+  verified 64GB box). Box-fit dropped as a criterion (async offloads to
+  cloud). Scout context: LatentSync now Apache (mouth rung viable after a
+  detector swap); Hunyuan family EXCLUDES EU/UK (dead end).
 - ⚪ **Quality envelope — STANDING priority (founder directive 2026-08-04):
   keep pushing render realism on BOTH pipelines.** Renderer-level rungs
   (shared, in effort order): (1) temporal-aware face restoration/SR pass on
