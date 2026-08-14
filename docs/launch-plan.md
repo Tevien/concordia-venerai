@@ -2,6 +2,7 @@
 
 **Date:** 2026-08-10 · **Author:** launch-specialist · **Status:** proposed, awaiting founder sign-off
 **Revised same day for "Launch economics v2" (decisions.md 2026-08-10): subscription-only pricing, cloud-GPU launch.**
+**Updated 2026-08-14: Apple Developer ORGANISATION enrollment APPROVED — the plan's riskiest dependency, resolved ~5 weeks before its Sep 22 contingency trigger. The iOS TestFlight-only contingency is void; date confidence on Oct 20 upgrades from "holds with a degraded-iOS fallback" to "holds on execution alone" (§1, §8).**
 **Launch date recommended:** **Tuesday 2026-10-20** — "Founding Access" launch (inside the Oct 2026 window stated to AWS)
 
 **What "launch" means here:** both apps live in their stores, the site switched from
@@ -17,10 +18,12 @@ window), consent-first, capacity-bounded, pricing as decided 2026-08-10
 ## 1. The critical path (what actually gates 2026-10-20)
 
 ```
+        (Apple org enrollment: APPROVED 2026-08-14 — gate cleared)
+
 aws configure → AWS core deploy (HTTPS) ─────────┐
 Serverless render path live (Modal/RunPod-class) ┼→ TestFlight build → founder self-sitting
-Apple org enrollment approved ───────────────────┤        │
-Remodel branch: founder device pass ─────────────┘        ▼
+Remodel branch: founder device pass ─────────────┘        │
+                                                          ▼
                                     nan's sitting (product validation gate,
                                         on the production render path)
                                                           │
@@ -83,9 +86,29 @@ Launch-blocking gaps **not yet on the project board as build tasks**:
 - [ ] **F:** ship the Corsair RAM RMA. Downgraded from schedule-critical to
   dev/test hygiene (local GPUs are dev/test + emergency valve only now), but
   August downtime is still cheaper than October downtime for guide-clip work.
-- [ ] **F:** chase Apple: enrollment submitted 2026-08-09; respond to any D&B/
-  verification contact same-day. Calendar reminder: if no movement by **Aug 21**,
-  phone Apple Developer Support.
+- [x] **F:** Apple organisation enrollment — **APPROVED 2026-08-14.** Replaced by
+  the Apple admin burn-down below.
+
+**Apple admin burn-down (unblocked 2026-08-14 — founder-side, ~half a day total,
+do this week):**
+- [ ] Accept the Apple Developer Program License Agreement in the new org account
+  (both developer.apple.com and the App Store Connect prompt).
+- [ ] App Store Connect → **Agreements, Tax, and Banking**: activate the **Paid
+  Applications** agreement for VENERAI LTD — UK bank details, UK tax info +
+  W-8BEN-E (US withholding). Nothing IAP can be created, sandbox-tested, or sold
+  until this is active, so it gates the §1 purchase-rails work — do it first.
+- [ ] Register bundle id **`eu.senason.vener`** (Certificates, Identifiers &
+  Profiles) and create the **app record** in App Store Connect (reserve the name
+  "VENER.AI", primary language en-GB).
+- [ ] Create an **App Store Connect API key** and wire it into EAS
+  (`eas credentials` / `eas submit`) so builds upload without manual Xcode.
+- [ ] **Users & Access / TestFlight:** add both phones' Apple IDs as internal
+  testers (internal group — no Beta App Review needed for internal builds).
+- [ ] Create the **$10/mo auto-renewable subscription** product + subscription
+  group (founder creates in ASC; Claude-side wires RevenueCat/StoreKit sandbox
+  against it — pulled forward from "the day Apple enrollment lands").
+- [ ] Apply to the **App Store Small Business Program** (needs the Paid Apps
+  agreement active) — pulled forward from the Sep 15–30 block.
 
 ### Aug 17 – Aug 31 — first store contact + the promise made structural
 - [ ] **F:** full self-sitting on the merged remodel → iterate flow annoyances.
@@ -110,10 +133,11 @@ Launch-blocking gaps **not yet on the project board as build tasks**:
   (infra-review action 2).
 - [ ] **F+C:** serverless render path E2E test: enqueue → Modal/RunPod render →
   S3 object → app playback, cold and warm.
-- [ ] **F+C:** TestFlight build #1 to both phones the day Apple approves
-  (EAS builds ready to fire; HTTPS backend from AWS deploy; R2 consent clip
-  already in the bundle). **Buffer: if Apple hasn't approved by Sep 4, escalate
-  daily and pull the contingency in §8 risk 1.**
+- [ ] **F+C:** TestFlight build #1 to both phones — Apple side is CLEAR
+  (approved 2026-08-14; admin burn-down above), so **the only remaining gate is
+  the HTTPS backend, i.e. `aws configure` + the AWS deploy**. EAS builds ready
+  to fire; R2 consent clip already in the bundle. Every day the deploy waits is
+  a day this build (and both sittings behind it) waits.
 - [ ] **C:** app screen-recordings S4/S5 for the site (closes the URGENT website row).
 
 ### Sep 1 – Sep 14 — the validation gate
@@ -437,7 +461,7 @@ pack in the App Review notes field + a reviewer-facing page.
 
 | Probe | Evidence to have ready |
 |---|---|
-| Org account for sensitive-data app (5.1.1(ix)) | Apple **organization** enrollment (in review since 2026-08-09) — this is why we did not ship on an individual account |
+| Org account for sensitive-data app (5.1.1(ix)) | Apple **organization** enrollment **APPROVED 2026-08-14** — we never shipped on an individual account |
 | Consent for the person being recorded | Demo video of the consent step: deliberate button press + the R1 spoken sentence disclosing voice/audience/photos; `asked_prompt` persisted per artifact (R3); API-enforced "no recorded consent → no twin" |
 | Data collection & privacy (5.1.1, 5.1.2) | Privacy nutrition labels matching reality (voice recordings, photos, stories; no ads, no data sale, no trackers — site has zero cookies); privacy.html; version-aware GDPR erase path; EU region (eu-west-1) residency + cross-account backup |
 | Account deletion (5.1.1(v)) | **User-facing in-app deletion (build item, §1)** + web URL (Play requires the URL); deletion removes S3 *versions*, not just current objects |
@@ -471,9 +495,9 @@ production rejection.
 
 | # | Risk | Likelihood | Impact | Mitigation |
 |---|---|---|---|---|
-| 1 | **Apple org enrollment stalls** (D&B verification, solo-founder org checks) | med | launch-critical | Same-day responses; phone support from Aug 21; **contingency:** if not approved by **Sep 22**, iOS launches Oct 20 as invitation-only TestFlight "Founding Access" (external TestFlight, up to 10k testers — capacity needs 25) while Android + web go store-live; App Store public release follows approval. Launch date holds; only the iOS distribution channel degrades. |
-| 2 | App Review rejection (grief-tech scrutiny, consent, purchases) | med | 1–3 wk slip | Evidence pack (§6); the §4a position is the lowest-risk purchase configuration (IAP offered, zero in-app steering); external-TestFlight dry run; two-week resubmission buffer; deletion + IAP compliance built early |
-| 3 | **Purchase rails unbuilt** (zero payment code as of 2026-08-10) | certain (it's a gap, not a maybe) | launch-critical | Start Aug 10 (§1): Stripe primary + entitlement API + iOS IAP via RevenueCat; Play Billing deliberately out of scope; sandbox both paths by Sep 14 |
+| 1 | **Critical path now single-threads through `aws configure` + AWS deploy** (founder action, pending since 2026-08-10) | med — a small action, but founder-bandwidth-bound and unstarted | every remaining gate (TestFlight #1, serverless path E2E, both sittings) queues behind it; each slipped week eats the nan-sitting→content-freeze buffer 1:1 | Do it this week — with Apple cleared it is the head of the entire chain; the deploy prompt is confirm-before-apply; the Sep 1–14 nan window is the first thing that compresses |
+| 2 | **Purchase rails unbuilt** (zero payment code as of 2026-08-10) | certain (it's a gap, not a maybe) | launch-critical | Start now (§1): Stripe primary + entitlement API + iOS IAP via RevenueCat; the ASC **Paid Applications agreement** (Apple burn-down list, §2) gates all IAP sandbox work — founder files it first; Play Billing deliberately out of scope; sandbox both paths by Sep 14 |
+| 3 | App Review rejection (grief-tech scrutiny, consent, purchases) | med | 1–3 wk slip | Evidence pack (§6); the §4a position is the lowest-risk purchase configuration (IAP offered, zero in-app steering); external-TestFlight dry run; two-week resubmission buffer; deletion + IAP compliance built early |
 | 4 | **Serverless render path fails to hit the bar** (cold starts on a ~15 GB model, provider variance) | med | product promise ("minutes later") broken for paying families | Warm pool through the 18:00–22:00 window (infra-review: evening clustering ~65%); persistent-model container already built; E2E test Aug, forced-cold-start test in the Oct dry-run; home pull-worker documented as emergency valve; cold-start p95 > 90 s is a stop-the-wave trigger |
 | 5 | Nan's sitting exposes flow problems | med (that's its job) | slip or quality risk | Two-week gap between her sitting and content freeze absorbs one iteration round; her sitting deliberately *after* founder refinement (2026-07-28) and *on* the production render path |
 | 6 | **Power-user cohort margin** (max usage = $4.50–7.50 GPU vs $10 sub) | med | thin-to-negative unit margin | The 1/day quota is the structural cap; watch spend/sub-month and the usage distribution (infra-review flags this as the pilot's key measurement); extra-moments pricing (wave 3+) monetizes the heavy tail instead of subsidizing it |
@@ -481,6 +505,12 @@ production rejection.
 | 8 | Email deliverability (OTP-only login + invites on fresh SES) | med | users literally can't log in | SES warm-up from Sep 1, DKIM/SPF/DMARC, spam-folder guidance inside every invite; SMTP2GO fallback already proven on /admin |
 | 9 | **Cash: subscription-only removes the up-front cushion** | low at pilot | runway | Credits absorb the $250–350/mo core stack for 3–6 months; break-even ≈ 30–35 subs (infra-review §5) — beyond the 25-family 2026 cap, so 2026 runs modestly cash-negative **by design**; wave 3 (2027) crosses it; serverless GPU is self-funding at ~$0.50–1.50/sub-month vs $9.40 net |
 | 10 | Scope creep from the quality-envelope standing directive | med | schedule | Renderer rungs continue **only** on async content (guide clips, pre-renders — polish is free there); content freeze Oct 5 applies to shipped clips; two-gate rule on anything new |
+
+**Retired:** Apple org enrollment stalls — **APPROVED 2026-08-14**, ~5 weeks
+before the Sep 22 contingency trigger; the iOS TestFlight-only launch
+contingency is void. Oct 20 now holds on execution alone: no external approval
+gates remain on the critical path until App Review itself (risk 3), which has
+its buffer built in.
 
 ## 9. Explicitly deferred (logged so deferral is a decision, not an accident)
 
