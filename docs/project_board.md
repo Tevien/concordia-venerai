@@ -83,12 +83,18 @@ Last full update: **2026-08-14**.
   did 74s IN ONE PASS (no seams, identity stable, transcript verbatim) — but
   position changes look unnatural with occasional identity shift; **Wan2.2-
   S2V-14B is best overall** (BF16 on ZeroGPU Pro 6000, ~28 s/output-s, ~9.4
-  quota-min per welcome — ~4 masters/day inside the free daily 40 min). In
-  flight: (1) 14B quant ladder (FP8/GGUF/lightning) costed against the L4 —
-  decides if 14B is the PRODUCTION async engine or masters-only; (2)
-  StableAvatar stabilization sweep (configs a-e, d/e rendering now on the
-  verified 64GB box). Box-fit dropped as a criterion (async offloads to
-  cloud). Scout context: LatentSync now Apache (mouth rung viable after a
+  quota-min per welcome — ~4 masters/day inside the free daily 40 min). ROUND 2
+  COMPLETE 2026-08-15 (14 files in data/stableavatar-ab/, founder judging):
+  (1) stitching is DEAD architecturally — full-precision control still shows
+  second-segment decay, so single-pass engines are the only fix; (2) sweep:
+  d + e steadiest (e now also fastest ~175 s/out-s post-RAM), c rejected;
+  LIMITATION: StableAvatar exposes no identity/motion dials — prompt is the
+  only lever; (3) 14B ladder: fp8 BEATS bf16 on Blackwell (19 vs 28 s/out-s);
+  **lightning-fp8 = 3.1 s/out-s → est $0.025/moment, ~32 moments/hr on an L4
+  → PRODUCTION async candidate if founder passes its quality** (stills clean
+  but flat; judge lip amplitude in motion); fp8 = masters tier ~$0.15/moment.
+  Fallback: stabilized StableAvatar volume + fp8 masters. Next validation:
+  one real L4 hour (~$1) to replace the 6x slowdown assumption — needs AWS. Scout context: LatentSync now Apache (mouth rung viable after a
   detector swap); Hunyuan family EXCLUDES EU/UK (dead end).
 - ⚪ **Quality envelope — STANDING priority (founder directive 2026-08-04):
   keep pushing render realism on BOTH pipelines.** Renderer-level rungs
