@@ -116,6 +116,17 @@ Last full update: **2026-08-14**.
   reenactment-style rendering (LivePortrait-class drives real frames), and
   per-twin LoRA later — a product/UX + consent-copy decision, not just ML;
   voice fine-tune tier (StyleTTS2) is this track's audio rung.
+- ⚪ **Content pipeline: grow the question/prompt bank with spare compute**
+  (founder 2026-08-15 — "people must not run out of content"): LLM-drafted
+  question candidates (NIM/local, idle time) → founder script review (gate 1)
+  → Clio clips rendered in idle GPU time → transcript/join audits (gate 2).
+  Server bank is already the source of truth so new questions ship WITHOUT an
+  app release; her VIDEO for a new question currently needs an asset update —
+  fix sequenced after the engine decision: clip delivery moves to
+  server/CDN-fetched with cache + bundled fallback (EAS OTA as the interim).
+- ⚪ Velocity-reuse + layer-thinning experiments on the 14B (h3.c-inspired,
+  founder-queued 2026-08-15): cut per-moment GPU cost → more daily moments
+  per subscriber at the same margin. Running behind the artifact-fix v2 work.
 - ⚪ "Bring your recordings" import angle for displaced HereAfter families
   (functionally supported today via artifact uploads; positioning work only).
 - ⚪ **Ambient living portraits** (founder vision 2026-08-03): the twin's frame
